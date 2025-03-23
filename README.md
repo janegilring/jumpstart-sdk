@@ -23,10 +23,10 @@ The Arc Jumpstart SDK contains:
 
 ## 🧰 Available Tools
 
-| Tool Name | Description | Documentation |
-|-----------|-------------|---------------|
-| URL Checker | A robust URL validation tool that scans codebase files for links and verifies their validity | [/tools/url-checker/README.md](/tools/url-checker/README.md) |
-| *More tools coming soon...* | | |
+| Tool Name | Description |
+|-----------|-------------|
+| [URL Checker](/tools/url-checker/README.md) | A robust URL validation tool that scans codebase files for links and verifies their validity |
+| *More tools coming soon...* | |
 
 ## 🔗 Related Repositories
 
