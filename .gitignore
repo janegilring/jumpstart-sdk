@@ -398,3 +398,15 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# URL Checker specific files
+tools/url-checker/logs/
+tools/url-checker/test_files/
+
+# Backup folders
+backup/
+backups/
+*_backup/
+*_backups/
+*-backup/
+*.bak/
