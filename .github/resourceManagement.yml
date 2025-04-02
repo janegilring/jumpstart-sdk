@@ -1,0 +1,95 @@
+# ===========================================================================
+# GitHub Repository Issue and Pull Request Management Policy
+# ===========================================================================
+id: 
+name: GitOps.PullRequestIssueManagement
+description: Handlers for when an issue is first opened
+owner: Arc Jumpstart
+resource: repository
+disabled: false
+where:
+configuration:
+  resourceManagementConfiguration:
+    # ===========================================================================
+    # EVENT RESPONDER TASKS
+    # Defines automated actions triggered by specific GitHub events
+    # ===========================================================================
+    eventResponderTasks:
+      # ---------------------------------------------------------------------------
+      # PULL REQUEST MANAGEMENT
+      # Handles PR creation, updates, and empty PRs
+      # ---------------------------------------------------------------------------
+      - description: >-
+         When a PR is opened/updated, if no files are modified
+          * Close the issue
+          * Add a comment
+        if:
+          - payloadType: Pull_Request
+          - isOpen
+          - or:
+              - isAction:
+                  action: Opened
+              - isAction:
+                  action: Synchronize
+          - filesMatchPattern:
+                pattern: ^$
+        then:
+          - addReply:
+              reply: >-
+                Hello @${issueAuthor},
+
+                This pull request does not update any files. Please review your commit history and resubmit.
+
+                We will be closing this pull request now!
+
+          - closePullRequest
+
+      - description: >- 
+         When a PR is opened against the policy_test branch, close it and add a comment
+        if:
+          - payloadType: Pull_Request
+          - isOpen
+          - or:
+              - isAction:
+                  action: Opened
+              - isAction:
+                  action: Synchronize                  
+          - and:
+              - targetsBranch:
+                    branch: main
+        then:
+          - addReply:
+              reply: >-
+                Hello @${issueAuthor},
+
+                This pull request is against the *main* branch. Please open a pull request against the main branch.
+
+                We will be closing this pull request now!
+
+          - closePullRequest
+
+      - description: 
+         When a PR is opened, post a message to the author
+        if:
+          - payloadType: Pull_Request
+          - isAction:
+              action: Opened
+          # Exclude empty PRs
+          - not:
+              filesMatchPattern:
+                pattern: ^$
+          # Exclude PRs targeting main branch
+          - not:
+              targetsBranch:
+                branch: main
+        then:
+          - addReply:
+              reply: >-
+                Hello @${issueAuthor},
+
+                Thank you for your pull request, A team member will review it soon. All pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
+                By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
+
+# Configuration for handling failures or success events
+onFailure:
+onSuccess:
