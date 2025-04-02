@@ -62,7 +62,7 @@ configuration:
               reply: >-
                 Hello ${issueAuthor},
 
-                This pull request is against the `main` branch. Please open a pull request against the `canary` branch.
+                This pull request is against the `main` branch. Please open a new pull request against the `canary` branch.
 
                 We will be closing this pull request now!
 
@@ -87,7 +87,7 @@ configuration:
               reply: >-
                 Hello ${issueAuthor},
 
-                Thank you for your pull request, A team member will review it soon. All pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
+                Thank you for your pull request, a team member will review it soon. All pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
                 By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
 
 # Configuration for handling failures or success events
