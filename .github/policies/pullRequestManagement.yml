@@ -1,5 +1,5 @@
 # ===========================================================================
-# GitHub Repository Issue and Pull Request Management Policy
+# GitHub Repository Pull Request Management Policy
 # ===========================================================================
 id: 
 name: GitOps.PullRequestIssueManagement
@@ -21,7 +21,7 @@ configuration:
       # ---------------------------------------------------------------------------
       - description: >-
          When a PR is opened/updated, if no files are modified
-          * Close the issue
+          * Close the PR
           * Add a comment
         if:
           - payloadType: Pull_Request
