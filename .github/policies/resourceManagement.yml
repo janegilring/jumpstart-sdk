@@ -76,12 +76,12 @@ configuration:
               action: Opened
           # Exclude empty PRs
           - not:
-              - filesMatchPattern:
-                  pattern: ^$
+              filesMatchPattern:
+                pattern: ^$
           # Exclude PRs targeting policy_test branch
           - not:
-              - targetsBranch:
-                  branch: policy_test
+              targetsBranch:
+                branch: policy_test
         then:
           - addReply:
               reply: >-
