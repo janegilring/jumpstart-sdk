@@ -45,7 +45,7 @@ configuration:
           - closePullRequest
 
       - description: >- 
-         When a PR is opened against the policy_test branch, close it and add a comment
+         When a PR is opened against the main branch, close it and add a comment
         if:
           - payloadType: Pull_Request
           - isOpen
@@ -62,9 +62,9 @@ configuration:
               reply: >-
                 Hello ${issueAuthor},
 
-                This pull request is against the `main` branch. Please open a new pull request against the `canary` branch.
-
-                We will be closing this pull request now!
+                This pull request was opened directly against the repository `main` branch, which we do not allow. We kindly ask you to open a new pull request against the `canary` branch instead.
+                
+                We will be closing this pull request now. Thank you for your collaboration!
 
           - closePullRequest
 
