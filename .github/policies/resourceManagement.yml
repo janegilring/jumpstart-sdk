@@ -60,9 +60,9 @@ configuration:
         then:
           - addReply:
               reply: >-
-                Hello @${issueAuthor},
+                Hello ${issueAuthor},
 
-                This pull request is against the *main* branch. Please open a pull request against the main branch.
+                This pull request is against the **main** branch. Please open a pull request against the **canary** branch.
 
                 We will be closing this pull request now!
 
