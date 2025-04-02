@@ -56,13 +56,13 @@ configuration:
                   action: Synchronize                  
           - and:
               - targetsBranch:
-                    branch: policy_test
+                    branch: main
         then:
           - addReply:
               reply: >-
                 Hello @${issueAuthor},
 
-                This pull request is against the *policy_test* branch. Please open a pull request against the main branch.
+                This pull request is against the *main* branch. Please open a pull request against the main branch.
 
                 We will be closing this pull request now!
 
@@ -78,10 +78,10 @@ configuration:
           - not:
               filesMatchPattern:
                 pattern: ^$
-          # Exclude PRs targeting policy_test branch
+          # Exclude PRs targeting main branch
           - not:
               targetsBranch:
-                branch: policy_test
+                branch: main
         then:
           - addReply:
               reply: >-
