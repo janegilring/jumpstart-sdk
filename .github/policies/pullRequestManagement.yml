@@ -3,7 +3,7 @@
 # ===========================================================================
 id: 
 name: GitOps.PullRequestIssueManagement
-description: Handlers for when an issue is first opened
+description: Handlers for when a Pull Request is first opened
 owner: Arc Jumpstart
 resource: repository
 disabled: false
@@ -78,18 +78,21 @@ configuration:
           - not:
               filesMatchPattern:
                 pattern: ^$
-          # Exclude PRs targeting main branch
+          # Exclude PRs targeting main branch - these are handled by a separate rule
           - not:
               targetsBranch:
                 branch: main
         then:
+          # Add automated welcome message with contribution guidelines
           - addReply:
               reply: >-
                 Hello ${issueAuthor},
 
                 Thank you for your pull request, a team member will review it soon. All pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
+                
                 By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
 
 # Configuration for handling failures or success events
+# These sections can be expanded with notification actions if needed
 onFailure:
 onSuccess:
