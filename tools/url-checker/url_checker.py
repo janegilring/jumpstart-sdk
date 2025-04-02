@@ -171,6 +171,39 @@ KNOWN_VALID_DOMAINS = [
     # Add more domains to skip here as needed
 ]
 
+# Function to detect false positive URLs that should be skipped
+def is_false_positive(url):
+    """Check if a URL is a known false positive pattern that should be skipped."""
+    # Template Base URL patterns
+    template_patterns = [
+        r'\(\$templateBaseUrl',
+        r'\(\$env:templateBaseUrl',
+        r'\(\$Using:templateBaseUrl',
+    ]
+    
+    # Storage account and GitHub patterns
+    placeholder_patterns = [
+        r'https://\{STORAGEACCOUNT\}\.blob\.core\.windows\.net/',
+        r'https://\$githubPat@github\.com/\$githubUser/\$appsRepo\.git',
+        r'http://\$URL:\$PORT',
+        r'https://\$\(\$HCIBoxConfig\.WACVMName\)\.',
+        r'https://\$stagingStorageAccountName\.blob\.core\.windows\.net/\$containerName/config',
+    ]
+    
+    # Check if URL matches any of the template patterns
+    for pattern in template_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping false positive template URL: {url}")
+            return True
+    
+    # Check if URL matches any of the placeholder patterns
+    for pattern in placeholder_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping false positive placeholder URL: {url}")
+            return True
+            
+    return False
+
 # Image file extensions to identify image links
 IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp', '.ico']
 # SVG files get special treatment
@@ -840,6 +873,10 @@ def main():
                     print(f"Skipping localhost or IP-based URL: {url}")
                     continue
                 
+                # Skip false positive URLs
+                if is_false_positive(url):
+                    continue
+                
                 # Check URL based on whether it's absolute or relative
                 parsed_url = urlparse(url)
                 if parsed_url.scheme in ('http', 'https'):
@@ -856,6 +893,9 @@ def main():
                     
                     # Check again if it's actually an absolute URL after stripping quotes
                     if parsed_clean.scheme in ('http', 'https'):
+                        # Skip false positive URLs after cleaning
+                        if is_false_positive(url_clean):
+                            continue
                         log_entry = check_absolute_url(url_clean, file_path)
                         if "[OK ABSOLUTE]" in log_entry:
                             ok_absolute_urls.append(log_entry)
