@@ -187,6 +187,7 @@ configuration:
       # Streamlines issue tracking by consolidating duplicates
       # ---------------------------------------------------------------------------
       - description: Add Resolution-Duplicate label to issues or PRs that are identified as duplicates
+        # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         triggerOnOwnActions: false
         if:
         - payloadType: Issue_Comment
@@ -230,6 +231,7 @@ configuration:
     # Automatically closes issues that need feedback but have no activity
     # ---------------------------------------------------------------------------
     - description: Close stale issues. Issues that have not had any activity for 7 days and are labeled with Needs-Author-Feedback and No-Recent-Activity will be closed.
+      # This runs daily at 6:00 and closes issues after the warning period has elapsed
       frequencies:
       - hourly:
           hour: 6
@@ -260,6 +262,7 @@ configuration:
 
     - description: Add No-Recent-Activity label to issues that have not had any activity for 7 days
       # First warning stage before closing stale issues
+      # Timeline: Day 7 - Add warning label, Day 14 - Close issue if no response
       frequencies:
       - hourly:
           hour: 6
