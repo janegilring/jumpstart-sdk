@@ -128,7 +128,7 @@ configuration:
           # Only apply to non-exempt users - this is critical to prevent rule overlap
           # This condition must match the exact opposite of the exempt user rule
           - not:
-              - isActivitySender:
+              isActivitySender:
                   user: likamrat
         then:
           # Provide educational feedback about our branch workflow
