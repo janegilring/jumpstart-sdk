@@ -85,6 +85,8 @@ configuration:
           - or: 
             - isActivitySender:
                   user: likamrat
+            - isActivitySender:
+                  user: kianaharris4
         then:
           # Add a label to track exempt PRs for auditing purposes
           - addLabel:
@@ -126,8 +128,11 @@ configuration:
           # Exclude exempt users - make sure they don't match this rule
           # Add additional 'not' conditions here for each exempt user
           - not:
-              isActivitySender:
-                  user: likamrat
+              - or: 
+                - isActivitySender:
+                      user: likamrat
+                - isActivitySender:
+                      user: kianaharris4
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
