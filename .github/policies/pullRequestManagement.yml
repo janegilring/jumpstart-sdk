@@ -85,13 +85,10 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-              isActivitySender:
+          - not:
+              - isActivitySender:
                   user: likamrat
                   issueAuthor: False
-          # - not:
-          #     isActivitySender:
-          #         user: likamrat
-          #         issueAuthor: False
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
