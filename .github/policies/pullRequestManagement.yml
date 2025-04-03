@@ -86,7 +86,7 @@ configuration:
               filesMatchPattern:
                   pattern: ^$
           - not:
-              - isActivitySender:
+              isActivitySender:
                   user: likamrat
         then:
           # Provide educational feedback about our branch workflow
