@@ -61,6 +61,41 @@ configuration:
           - closePullRequest
 
       # ---------------------------------------------------------------------------
+      # EXEMPT USER PR TO MAIN BRANCH
+      # Allow specific team members to create PRs against main branch
+      # This creates an exception for maintainers who need direct access to main
+      # ---------------------------------------------------------------------------
+      - description: When an exempt user opens a PR against the main branch, allow it
+        if:
+          # Only process open pull requests targeting the main branch
+          - payloadType: Pull_Request
+          - isOpen
+          # Trigger on new PR creation or when commits are pushed
+          - or:
+              - isAction:
+                  action: Opened
+              - isAction:
+                  action: Synchronize
+          # Ensure the target branch is main
+          - targetsBranch:
+                branch: main
+          # Check if the author is likamrat (the exempt user)
+          - isActivitySender:
+                user: likamrat
+        then:
+          # Add a label to track exempt PRs for auditing purposes
+          # - addLabel:
+          #     label: Exempt-Maintainer
+          # Post a welcome message specific to maintainers
+          - addReply:
+              reply: |
+                Hello ${issueAuthor},
+                
+                This PR has been allowed to target the main branch directly because you are an exempt maintainer.
+                
+                Thank you for your contribution!
+
+      # ---------------------------------------------------------------------------
       # MAIN BRANCH PROTECTION
       # Prevents direct contributions to main branch and redirects to canary
       # This enforces our gitflow process where changes go through canary first
@@ -83,11 +118,13 @@ configuration:
                 branch: main
           # Exclude PRs with no files modified - these are handled by a different rule
           - not:
-              - or:
-                  - filesMatchPattern:
-                      pattern: ^$
-                  - isActivitySender:
-                      user: likamrat
+              filesMatchPattern:
+                  pattern: ^$
+          # Exclude exempt users - make sure they don't match this rule
+          - not:
+              equals:
+                  value1: ${issueAuthor}
+                  value2: likamrat
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
