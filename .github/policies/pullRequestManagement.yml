@@ -48,7 +48,7 @@ configuration:
               reply: |
                 ⚠️ **WARNING: Empty Pull Request** ⚠️
                 
-                Hello ${issueAuthor},
+                👋 Hello ${issueAuthor},
 
                 This pull request does not update any files. Please review your commit history and resubmit.
 
@@ -85,14 +85,14 @@ configuration:
                 issueAuthor: True
         then:
           # Add a label to track exempt PRs for auditing purposes
-          # - addLabel:
-          #     label: Exempt-Maintainer
+          - addLabel:
+              label: Exempt-Maintainer
           # Post a welcome message specific to maintainers
           - addReply:
               reply: |
-                Hello ${issueAuthor},
+                👋 Hello ${issueAuthor},
                 
-                This PR has been allowed to target the main branch directly because you are an exempt maintainer.
+                This PR has been allowed to target the main branch directly because you are an exempt maintainer 👑
                 
                 Thank you for your contribution!
 
@@ -131,7 +131,7 @@ configuration:
               reply: |
                 ⚠️ **WARNING: Wrong Target Branch** ⚠️
                 
-                Hello ${issueAuthor},
+                👋 Hello ${issueAuthor},
 
                 This pull request was made directly against the repository `main` branch, which we do not allow. We kindly ask you to update or open a new pull request against the [`canary`](https://github.com/Azure/arc_jumpstart_docs/tree/canary/docs) branch instead. Please note that the `canary` branch serves as our integration environment where documentation changes are first reviewed, tested, and refined before being promoted to the main branch for official publication. This workflow ensures our documentation maintains high quality and consistency.
                 
@@ -165,7 +165,7 @@ configuration:
           # Add automated welcome message with contribution guidelines
           - addReply:
               reply: |
-                Hello ${issueAuthor},
+                👋 Hello ${issueAuthor},
 
                 Thank you for your pull request, a team member will review it soon. All issues and pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
                 By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
