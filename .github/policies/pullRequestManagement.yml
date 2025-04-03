@@ -60,7 +60,7 @@ configuration:
 
           - closePullRequest
 
-      # ---------------------------------------------------------------------------
+      # ---------------------------------------------------------------------------1
       # EXEMPT USER PR TO MAIN BRANCH
       # Allow specific team members to create PRs against main branch
       # This creates an exception for maintainers who need direct access to main
