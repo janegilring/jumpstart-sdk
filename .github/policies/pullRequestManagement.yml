@@ -80,6 +80,8 @@ configuration:
           - targetsBranch:
                 branch: main
           # Check if the author is likamrat (the exempt user)
+          # To add more exempt users, create additional similar rules with different usernames
+          # or add more 'not isActivitySender' conditions in the MAIN BRANCH PROTECTION rule below
           - isActivitySender:
                 user: likamrat
                 issueAuthor: True
@@ -122,6 +124,7 @@ configuration:
               filesMatchPattern:
                   pattern: ^$
           # Exclude exempt users - make sure they don't match this rule
+          # Add additional 'not' conditions here for each exempt user
           - not:
               isActivitySender:
                   user: likamrat
