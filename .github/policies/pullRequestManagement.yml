@@ -83,10 +83,10 @@ configuration:
                 branch: main
           # Exclude PRs with no files modified - these are handled by a different rule
           - not:
-              filesMatchPattern:
-                  pattern: ^$
-              and:
-                - isActivitySender:
+              or:
+                filesMatchPattern:
+                    pattern: ^$
+                isActivitySender:
                     user: likamrat
         then:
           # Provide educational feedback about our branch workflow
