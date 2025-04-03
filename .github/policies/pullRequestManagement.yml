@@ -122,7 +122,7 @@ configuration:
                   pattern: ^$
           # Exclude exempt users - make sure they don't match this rule
           - not:
-            - isActivitySender:
+              isActivitySender:
                   user: likamrat
         then:
           # Provide educational feedback about our branch workflow
