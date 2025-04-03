@@ -77,7 +77,10 @@ configuration:
               - isAction:
                   action: Opened
               - isAction:
-                  action: Synchronize  
+                  action: Synchronize
+              - isActivitySender:
+                  user: likamrat
+                  issueAuthor: False
           # Ensure the target branch is main
           - targetsBranch:
                 branch: main
@@ -85,9 +88,10 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          - not:
-              isActivitySender:
-                  user: likamrat
+          # - not:
+          #     isActivitySender:
+          #         user: likamrat
+          #         issueAuthor: False
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
