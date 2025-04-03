@@ -85,13 +85,10 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          # Exclude specific team members or teams from this rule
-          # This allows trusted maintainers to push directly to main when needed
+          # Exclude specific user from this rule - simplified condition structure
           - not:
-              or:
-                # Exclude specific users by username
-                - isAuthoredBy:
-                    user: likamrat  # Replace with actual username
+              isAuthoredBy:
+                  user: likamrat
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
