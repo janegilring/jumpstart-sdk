@@ -129,9 +129,6 @@ configuration:
           - not:
               isActivitySender:
                   user: likamrat
-          - not:
-              isActivitySender:
-                  user: kianaharris4                 
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
@@ -145,6 +142,10 @@ configuration:
                 We will be closing this pull request now.
                 
                 Thank you for your collaboration!
+
+          # Add abandoned label to track automatically closed PRs
+          - addLabel:
+              label: Abandoned
 
           - closePullRequest
 
