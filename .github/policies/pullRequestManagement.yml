@@ -80,8 +80,9 @@ configuration:
           - targetsBranch:
                 branch: main
           # Check if the author is likamrat (the exempt user)
-          - isAuthoredBy:
+          - isActivitySender:
                 user: likamrat
+                issueAuthor: True
         then:
           # Add a label to track exempt PRs for auditing purposes
           # - addLabel:
