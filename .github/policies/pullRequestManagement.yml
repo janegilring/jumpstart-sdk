@@ -128,7 +128,7 @@ configuration:
           # Exclude exempt users - make sure they don't match this rule
           # Add additional 'not' conditions here for each exempt user
           - not:
-              - or: 
+              or: 
                 - isActivitySender:
                       user: likamrat
                 - isActivitySender:
