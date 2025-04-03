@@ -86,8 +86,8 @@ configuration:
               filesMatchPattern:
                   pattern: ^$
           - or:
-              - isAuthoredBy:
-                  user: likamrat
+              - isActivitySender:
+                  issueAuthor: True
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
