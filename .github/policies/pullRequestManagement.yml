@@ -79,7 +79,8 @@ configuration:
           # Ensure the target branch is main
           - targetsBranch:
                 branch: main
-          # Check if the author is likamrat (the exempt user)
+          # Check if the author can be exempted
+          # This condition allows maintainers to bypass the main branch protection
           # To add more exempt users, create additional similar rules with different usernames
           # or add more 'not isActivitySender' conditions in the MAIN BRANCH PROTECTION rule below
           - isActivitySender:
@@ -126,12 +127,12 @@ configuration:
                   pattern: ^$
           # Only apply to non-exempt users - this is critical to prevent rule overlap
           # This condition must match the exact opposite of the exempt user rule
-          # - not:
-          #     or:
-          #       - isActivitySender:
-          #           user: likamrat
-          #       - isActivitySender:
-          #           user: kianaharris4
+          - not:
+                isActivitySender:
+                  user: likamrat
+          - not:
+                isActivitySender:
+                  user: kianaharris4                    
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
