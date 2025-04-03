@@ -52,6 +52,10 @@ configuration:
 
                 We will be closing this pull request now, thank you for your collaboration!
 
+          # Add abandoned label to track automatically closed empty PRs
+          - addLabel:
+              label: Abandoned
+
           - closePullRequest
 
       # ---------------------------------------------------------------------------
