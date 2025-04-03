@@ -74,9 +74,12 @@ configuration:
                   action: Synchronize                  
           # Ensure the target branch is main
           # The 'and' condition here is technically redundant but improves readability
-          - and:
-              - targetsBranch:
-                    branch: main
+          - targetsBranch:
+                branch: main
+          # Exclude PRs with no files modified - these are handled by a different rule
+          - not:
+              filesMatchPattern:
+                  pattern: ^$
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
