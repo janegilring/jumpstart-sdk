@@ -90,9 +90,8 @@ configuration:
                   permission: Admin
               - activitySenderHasPermission:
                   permission: Write
-              - isActivitySender:
+              - isAuthoredBy:
                   user: likamrat
-                  issueAuthor: False
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
