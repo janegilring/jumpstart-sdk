@@ -85,7 +85,19 @@ python url_checker.py --dir=docs
 
 # Use a custom timeout for HTTP requests
 python url_checker.py --timeout=30
+
+# Exclude specific folders from being checked
+python url_checker.py --exclude node_modules vendor
+
+# Combine multiple options
+python url_checker.py --dir=src --exclude tests temp --timeout=20
 ```
+
+The `--exclude` option accepts multiple folder paths that will be skipped during URL checking. This is useful for:
+- Excluding third-party code and vendor directories
+- Skipping generated code folders
+- Ignoring temporary or build directories
+- Reducing execution time for large repositories
 
 ## 🛠️ Helper Tools
 
