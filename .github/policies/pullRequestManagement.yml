@@ -128,11 +128,8 @@ configuration:
           # Only apply to non-exempt users - this is critical to prevent rule overlap
           # This condition must match the exact opposite of the exempt user rule
           - not:
-                isActivitySender:
+              - isActivitySender:
                   user: likamrat
-          - not:
-                isActivitySender:
-                  user: kianaharris4                    
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
@@ -190,3 +187,6 @@ onFailure:
   # Can be configured to notify admins or log errors
 onSuccess:
   # Can be configured to perform actions upon successful execution
+
+
+  # -----TESTING-----
