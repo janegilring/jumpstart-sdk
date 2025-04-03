@@ -78,9 +78,6 @@ configuration:
                   action: Opened
               - isAction:
                   action: Synchronize
-              - isActivitySender:
-                  user: likamrat
-                  issueAuthor: False
           # Ensure the target branch is main
           - targetsBranch:
                 branch: main
@@ -88,6 +85,9 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
+              isActivitySender:
+                  user: likamrat
+                  issueAuthor: False
           # - not:
           #     isActivitySender:
           #         user: likamrat
