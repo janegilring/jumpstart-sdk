@@ -168,17 +168,55 @@ KNOWN_VALID_DOMAINS = [
     "linkedin.com",
     "icanhazip.com",
     "shell.azure.com",
+    "aka.ms",               # Microsoft's URL shortener
+    "go.microsoft.com",     # Another Microsoft URL shortener
+    "api.fabric.microsoft.com",  # Microsoft Fabric API
+    "dashboards.kusto.windows.net", # Microsoft Kusto dashboards
+    "api.powerbi.com",      # PowerBI API domain
+    "analysis.windows.net",  # Power BI analysis domain
+    "api.kusto.windows.net", # Kusto API
     # Add more domains to skip here as needed
+]
+
+# Add a list of domains that may have certificate issues but should be considered valid
+TRUSTED_DOMAINS_WITH_CERT_ISSUES = [
+    "jumpstartcdn-",        # Azure Front Door CDN domains used by aka.ms redirects
+    "azurefd.net",          # Azure Front Door domain
 ]
 
 # Function to detect false positive URLs that should be skipped
 def is_false_positive(url):
     """Check if a URL is a known false positive pattern that should be skipped."""
+    # Skip direct domain matches first (most efficient check)
+    try:
+        parsed_url = urlparse(url)
+        if parsed_url.netloc in KNOWN_VALID_DOMAINS:
+            print(f"Skipping trusted domain URL: {url}")
+            return True
+    except:
+        pass  # Continue with other checks if parsing fails
+
+    # Simple string patterns that should be skipped
+    simple_skip_patterns = [
+        "http://\\", 
+        "http:\\", 
+        "http://\\\\", 
+        "http:\\\\\\", 
+        "https://\\", 
+        "https://\\\\"
+    ]
+    
+    for pattern in simple_skip_patterns:
+        if pattern in url:
+            print(f"Skipping URL with backslashes: {url}")
+            return True
+    
     # Template Base URL patterns
     template_patterns = [
         r'\(\$templateBaseUrl',
         r'\(\$env:templateBaseUrl',
         r'\(\$Using:templateBaseUrl',
+        r'\$Env:templateBaseUrl',  # PowerShell environment variable syntax
     ]
     
     # Storage account and GitHub patterns
@@ -189,6 +227,146 @@ def is_false_positive(url):
         r'https://\$\(\$HCIBoxConfig\.WACVMName\)\.',
         r'https://\$stagingStorageAccountName\.blob\.core\.windows\.net/\$containerName/config',
     ]
+    
+    # PowerShell variable names that look like URLs or paths but aren't actual URLs
+    powershell_variable_patterns = [
+        r'\$websiteUrls',          # Variable holding website URLs
+        r'\$websiteUrls\[',        # With array indexing
+        r'\$websiteUrls\.',        # With property/method access
+        r'\$mqttExplorerReleasesUrl', # MQTT Explorer releases URL variable
+        r'\$mqttExplorerReleaseDownloadUrl', # MQTT Explorer download URL variable
+        r'\$terminalDownloadUri',   # Terminal download URI variable
+        r'\$uri',                  # Generic URI variable
+        r'\$url',                  # Generic URL variable
+        r'\$downloadUrl',          # Download URL variable
+        r'\$aksEEReleasesUrl',     # AKS EE releases URL variable
+        r'\$AKSEEReleaseDownloadUrl', # AKS EE download URL variable
+        r'\$localPathStorageUrl',  # Local path storage URL variable
+        r'\$acsadeployYamlUrl',    # ACSA deploy YAML URL variable
+        r'\$aksEEk3sUrl',          # AKS EE K3s URL variable
+        r'\$githubApiUrl',         # GitHub API URL variable
+        r'\$fabricHeaders',        # Fabric API headers variable
+        r'\$_',                    # PowerShell automatic variable for current pipeline object
+    ]
+    
+    # Script files and commands that appear to be URLs but aren't
+    script_file_patterns = [
+        r'get_helm\.sh',           # Helm installation script
+        r'http://\\',              # Escaped backslash in URL (not a real URL)
+        r'http://\\\\',            # Multiple escaped backslashes in URL
+        r'http://\\\\\S*',         # Multiple escaped backslashes with any additional characters
+        r'https://\\\\\S*',        # Multiple escaped backslashes with HTTPS
+    ]
+    
+    # Escaped backslashes in URLs or JSON path patterns - expanded patterns
+    escaped_backslash_patterns = [
+        r'http://\\+',             # One or more backslashes after http://
+        r'https://\\+',            # One or more backslashes after https://
+        r'http:\\+',               # Backslashes without forward slashes
+        r'https:\\+',              # Backslashes without forward slashes
+        r'http://\\\\\S*',         # Multiple escaped backslashes with any additional characters 
+        r'http://\\',              # Single backslash
+        r'http:/\\',               # Malformed backslash
+        r'https://\\',             # HTTPS with backslash
+    ]
+    
+    # Template variable patterns (JavaScript-style ${var} and shell-style $var)
+    template_variable_patterns = [
+        r'http://\${[^}]+}', # ${variable} format
+        r'https://\${[^}]+}',
+        r'http://\${[^}]+}:[0-9]+', # With port
+        r'https://\${[^}]+}:[0-9]+',
+        r'http://\${[^}]+}:[0-9]+/\w+', # With path after port
+        r'https://\${[^}]+}:[0-9]+/\w+',
+        r'http://\$[a-zA-Z0-9_]+', # $variable format (without braces)
+        r'https://\$[a-zA-Z0-9_]+',
+        r'http://\$[a-zA-Z0-9_]+:[0-9]+', # With port
+        r'https://\$[a-zA-Z0-9_]+:[0-9]+',
+        r'https://\$[a-zA-Z0-9_]+/\w+', # With path (no port)
+        r'https://\${[^}]+}/\w+', # With path (no port) for braced variables
+        r'https://[^/]+/\$[a-zA-Z0-9_]+', # Variable in path
+        r'https://[^/]+/\${[^}]+}', # Braced variable in path
+        r'https://\$Env:[a-zA-Z0-9_]+', # PowerShell Env variables in URLs
+        r'https://\$env:[a-zA-Z0-9_]+', # PowerShell env variables in URLs (lowercase)
+    ]
+    
+    # Query string variable patterns
+    query_variable_patterns = [
+        r'https://[^?]+\?[^=]+=\$[a-zA-Z0-9_]+',  # https://example.com?param=$variable
+        r'https://[^?]+\?[^=]+=\${[^}]+}',        # https://example.com?param=${variable}
+    ]
+    
+    # XML namespace URLs that aren't meant to be accessed directly
+    xml_namespace_urls = [
+        'http://www.w3.org/2000/svg',
+        'http://www.w3.org/1999/xlink',
+    ]
+    
+    # Special placeholder hostnames (typically used in configs/templates)
+    placeholder_hostnames = [
+        r'influxPlaceholder',
+    ]
+    
+    # Patterns for specific GitHub raw URLs that are placeholders
+    github_raw_urls = [
+        r'https://raw\.githubusercontent\.com/microsoft/azure_arc/main/azure_jumpstart_ag/',
+        r'https://raw\.githubusercontent\.com/microsoft/azure_arc/main/.+/'
+    ]
+    
+    # Local script file patterns that shouldn't be checked as URLs
+    local_script_patterns = [
+        r'^\.\/[a-zA-Z0-9_-]+\.sh$',         # ./script.sh
+        r'^\.\/[a-zA-Z0-9_-]+\.ps1$',        # ./script.ps1
+        r'^\.\/[a-zA-Z0-9_-]+\.bat$',        # ./script.bat
+        r'^\.\/[a-zA-Z0-9_-]+\.cmd$',        # ./script.cmd
+        r'\.\/akri\.sh$',                    # ./akri.sh specifically
+    ]
+    
+    # GitHub API URL patterns with variables
+    github_api_variable_patterns = [
+        r'\$gitHubAPIBaseUri\/repos\/\$githubUser\/\$appsRepo',
+        r'\$gitHubAPIBaseUri\/repos\/[^\/]+\/[^\/]+',
+        r'\$githubApiUrl',
+        r'api\.github\.com\/repos\/\$[a-zA-Z0-9_]+\/',
+    ]
+    
+    # Additional Management API domains that are valid but often give auth errors
+    management_api_domains = [
+        r'management\.core\.windows\.net',
+    ]
+    
+    # HTTP verbs that are commonly used in PowerShell scripts and not actual URLs
+    http_verbs = [
+        r'^Get$', 
+        r'^POST$',
+        r'^GET$',
+        r'^PUT$',
+        r'^PATCH$',
+        r'^DELETE$',
+        r'^OPTIONS$',
+        r'^HEAD$',
+        r'^CONNECT$',
+        r'^TRACE$',
+        r'^Post$'
+    ]
+    
+    # Check for standalone HTTP verbs
+    for verb in http_verbs:
+        if re.match(verb, url):
+            print(f"Skipping HTTP verb: {url}")
+            return True
+    
+    # Check for placeholder hostnames
+    for hostname in placeholder_hostnames:
+        if re.search(rf'https?://{hostname}(?::[0-9]+)?/?', url, re.IGNORECASE):
+            print(f"Skipping placeholder hostname URL: {url}")
+            return True
+    
+    # Check for specific GitHub raw URLs that are placeholders
+    for pattern in github_raw_urls:
+        if re.search(pattern, url):
+            print(f"Skipping GitHub raw placeholder URL: {url}")
+            return True
     
     # Check if URL matches any of the template patterns
     for pattern in template_patterns:
@@ -201,6 +379,76 @@ def is_false_positive(url):
         if re.search(pattern, url):
             print(f"Skipping false positive placeholder URL: {url}")
             return True
+    
+    # Check if URL matches any of the PowerShell variable patterns
+    for pattern in powershell_variable_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping PowerShell variable URL: {url}")
+            return True
+    
+    # Check if URL matches any of the script file patterns
+    for pattern in script_file_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping script file or command URL: {url}")
+            return True
+            
+    # Check if URL matches escaped backslash patterns
+    for pattern in escaped_backslash_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping escaped backslash URL pattern: {url}")
+            return True
+    
+    # Check if URL matches any of the template variable patterns
+    for pattern in template_variable_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping template variable URL: {url}")
+            return True
+    
+    # Check if URL matches any of the query variable patterns
+    for pattern in query_variable_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping query variable URL: {url}")
+            return True
+    
+    # Check for local script file patterns
+    for pattern in local_script_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping local script file: {url}")
+            return True
+    
+    # Check for GitHub API URL variable patterns
+    for pattern in github_api_variable_patterns:
+        if re.search(pattern, url):
+            print(f"Skipping GitHub API URL variable: {url}")
+            return True
+    
+    # Check if URL contains management API domains
+    for domain in management_api_domains:
+        if re.search(domain, url):
+            print(f"Skipping management API domain: {url}")
+            return True
+    
+    # Check if URL is an XML namespace
+    if url in xml_namespace_urls or url.startswith('http://www.w3.org/2000/svg') or url.startswith('http://www.w3.org/1999/xlink'):
+        print(f"Skipping XML namespace URL: {url}")
+        return True
+    
+    # Additional check for specific URLs that we know are problematic
+    hardcoded_urls_to_skip = [
+        "https://api.fabric.microsoft.com",
+        "https://api.powerbi.com",
+        "https://dashboards.kusto.windows.net",
+        "https://api.kusto.windows.net",
+        "https://analysis.windows.net",
+        "https://wabi-us-central-b-primary-redirect.analysis.windows.net",
+        "https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_jumpstart_ag/",
+        "http://influxPlaceholder:8086",
+        "https://management.core.windows.net/", # Azure Management API
+    ]
+    
+    if url in hardcoded_urls_to_skip:
+        print(f"Skipping hardcoded URL: {url}")
+        return True
             
     return False
 
@@ -225,18 +473,53 @@ def parse_arguments():
         default=TIMEOUT,
         help=f"Timeout in seconds for HTTP requests (default: {TIMEOUT})"
     )
+    parser.add_argument(
+        "--exclude",
+        nargs="*",
+        default=[],
+        help="Folders to exclude from checking (can specify multiple paths)"
+    )
     return parser.parse_args()
 
 # =============================================================================
 # FILE & URL PROCESSING FUNCTIONS
 # =============================================================================
 
-def find_files_to_check():
-    """Find all supported files in the repository, skipping 'archive' folders."""
+def find_files_to_check(exclude_folders=None):
+    """
+    Find all supported files in the repository, skipping 'archive' folders
+    and any user-specified excluded folders.
+    
+    Args:
+        exclude_folders: List of folder paths to exclude
+        
+    Returns:
+        List of file paths to check
+    """
+    if exclude_folders is None:
+        exclude_folders = []
+    
+    # Convert exclude_folders to absolute paths for easier comparison
+    abs_exclude_folders = []
+    for folder in exclude_folders:
+        if os.path.isabs(folder):
+            abs_exclude_folders.append(os.path.normpath(folder))
+        else:
+            abs_exclude_folders.append(os.path.normpath(os.path.join(REPO_PATH, folder)))
+    
+    if exclude_folders:
+        print(f"Excluding folders: {', '.join(exclude_folders)}")
+    
     files_to_check = []
     for root, dirs, files in os.walk(REPO_PATH):
-        # Skip 'archive' folders and hidden directories
+        # Skip 'archive' folders, hidden directories, and excluded folders
         dirs[:] = [d for d in dirs if d.lower() != 'archive' and not d.startswith('.')]
+        
+        # Check if the current directory should be excluded
+        if any(os.path.abspath(root).startswith(excluded) for excluded in abs_exclude_folders):
+            print(f"Skipping excluded directory: {root}")
+            dirs[:] = []  # Skip all subdirectories
+            continue
         
         for file in files:
             file_ext = os.path.splitext(file)[1].lower()
@@ -244,6 +527,43 @@ def find_files_to_check():
             if file_ext in SUPPORTED_FILE_TYPES:
                 files_to_check.append(os.path.join(root, file))
     
+    return files_to_check
+
+def find_files_in_directory(directory, exclude_folders=None):
+    """
+    Find all supported files in the given directory, excluding specified folders.
+    
+    Args:
+        directory: Directory to search in
+        exclude_folders: List of folder paths to exclude
+        
+    Returns:
+        List of file paths to check
+    """
+    if exclude_folders is None:
+        exclude_folders = []
+        
+    # Convert exclude_folders to absolute paths for easier comparison
+    abs_exclude_folders = []
+    for folder in exclude_folders:
+        if os.path.isabs(folder):
+            abs_exclude_folders.append(os.path.normpath(folder))
+        else:
+            abs_exclude_folders.append(os.path.normpath(os.path.join(directory, folder)))
+    
+    files_to_check = []
+    for root, dirs, files in os.walk(directory):
+        # Check if the current directory should be excluded
+        if any(os.path.abspath(root).startswith(excluded) for excluded in abs_exclude_folders):
+            print(f"Skipping excluded directory: {root}")
+            dirs[:] = []  # Skip all subdirectories
+            continue
+            
+        for file in files:
+            file_ext = os.path.splitext(file)[1].lower()
+            # Check if this is a supported file type
+            if file_ext in SUPPORTED_FILE_TYPES:
+                files_to_check.append(os.path.join(root, file))
     return files_to_check
 
 def extract_urls_by_file_type(file_path):
@@ -458,6 +778,13 @@ def check_absolute_url(url, md_file=None, retries=3):
                 # Last retry and it's a trusted domain with connection issues
                 if attempt >= retries - 1:
                     log_entry = f"{Colors.OKGREEN}[OK ABSOLUTE] {url} (trusted domain, connection issue: {type(e).__name__}){file_info}{Colors.ENDC}"
+                    print(log_entry)
+                    return log_entry
+            
+            # Special handling for certificate errors on trusted domains
+            if isinstance(e, requests.exceptions.SSLError):
+                if any(trusted_domain in domain for trusted_domain in TRUSTED_DOMAINS_WITH_CERT_ISSUES) or any(trusted_domain in url for trusted_domain in TRUSTED_DOMAINS_WITH_CERT_ISSUES):
+                    log_entry = f"{Colors.OKGREEN}[OK ABSOLUTE] {url} (trusted domain with certificate issue){file_info}{Colors.ENDC}"
                     print(log_entry)
                     return log_entry
             
@@ -832,15 +1159,14 @@ def main():
     ok_root_relative_urls = []
     no_links_types = []
     
-    # Change: Use the new find_files_to_check function instead of find_markdown_files
     # If a specific directory is provided, only check files there
     if args.dir:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         test_dir = os.path.join(script_dir, args.dir)
         print(f"Only checking files in test directory: {test_dir}")
-        files_to_check = find_files_in_directory(test_dir)
+        files_to_check = find_files_in_directory(test_dir, args.exclude)
     else:
-        files_to_check = find_files_to_check()
+        files_to_check = find_files_to_check(args.exclude)
     
     # Create log file with timestamp
     timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
@@ -877,63 +1203,84 @@ def main():
                 if is_false_positive(url):
                     continue
                 
-                # Check URL based on whether it's absolute or relative
-                parsed_url = urlparse(url)
-                if parsed_url.scheme in ('http', 'https'):
-                    # It's an absolute URL - pass the file path to track source
-                    log_entry = check_absolute_url(url, file_path)
-                    if "[OK ABSOLUTE]" in log_entry:
-                        ok_absolute_urls.append(log_entry)
-                    else:
-                        broken_absolute_urls.append(log_entry)
-                else:
-                    # Strip quotes before further processing to avoid false positives
-                    url_clean = url.strip('"\'')
-                    parsed_clean = urlparse(url_clean)
-                    
-                    # Check again if it's actually an absolute URL after stripping quotes
-                    if parsed_clean.scheme in ('http', 'https'):
-                        # Skip false positive URLs after cleaning
-                        if is_false_positive(url_clean):
-                            continue
-                        log_entry = check_absolute_url(url_clean, file_path)
+                # Add error handling for URL parsing
+                try:
+                    # Check URL based on whether it's absolute or relative
+                    parsed_url = urlparse(url)
+                    if parsed_url.scheme in ('http', 'https'):
+                        # It's an absolute URL - pass the file path to track source
+                        log_entry = check_absolute_url(url, file_path)
                         if "[OK ABSOLUTE]" in log_entry:
                             ok_absolute_urls.append(log_entry)
                         else:
                             broken_absolute_urls.append(log_entry)
                     else:
-                        # It's a relative URL, image, SVG, root-relative, or header link
-                        log_entry, is_image, is_svg, is_root_relative, has_anchor = check_relative_url(url, file_path)
+                        # Strip quotes before further processing to avoid false positives
+                        url_clean = url.strip('"\'')
                         
-                        if "[BROKEN HEADER]" in log_entry:
-                            broken_header_urls.append(log_entry)
-                        elif "[OK HEADER]" in log_entry:
-                            ok_header_urls.append(log_entry)
-                        # Changed order of these conditions to prioritize image/SVG type over root-relative
-                        elif is_svg:
-                            if "[OK SVG]" in log_entry:
-                                ok_svg_urls.append(log_entry)
+                        try:
+                            parsed_clean = urlparse(url_clean)
+                            
+                            # Check again if it's actually an absolute URL after stripping quotes
+                            if parsed_clean.scheme in ('http', 'https'):
+                                # Skip false positive URLs after cleaning
+                                if is_false_positive(url_clean):
+                                    continue
+                                log_entry = check_absolute_url(url_clean, file_path)
+                                if "[OK ABSOLUTE]" in log_entry:
+                                    ok_absolute_urls.append(log_entry)
+                                else:
+                                    broken_absolute_urls.append(log_entry)
                             else:
-                                broken_svg_urls.append(log_entry)
-                        elif is_image:
-                            if "[OK IMAGE]" in log_entry:
-                                ok_image_urls.append(log_entry)
-                            else:
-                                broken_image_urls.append(log_entry)
-                        elif is_root_relative:
-                            if "[OK ROOT-RELATIVE]" in log_entry:
-                                ok_root_relative_urls.append(log_entry)
-                            else:
-                                broken_root_relative_urls.append(log_entry)
-                        else:
-                            if "[OK RELATIVE]" in log_entry:
-                                ok_relative_urls.append(log_entry)
-                            else:
-                                # Use the new log message format for categorization
-                                if "[BROKEN RELATIVE WITH ANCHOR]" in log_entry:
-                                    broken_relative_urls_with_anchor.append(log_entry)
-                                elif "[BROKEN RELATIVE WITHOUT ANCHOR]" in log_entry:
-                                    broken_relative_urls_without_anchor.append(log_entry)
+                                # It's a relative URL, image, SVG, root-relative, or header link
+                                log_entry, is_image, is_svg, is_root_relative, has_anchor = check_relative_url(url, file_path)
+                                
+                                # ...existing categorization code...
+                                if "[BROKEN HEADER]" in log_entry:
+                                    broken_header_urls.append(log_entry)
+                                elif "[OK HEADER]" in log_entry:
+                                    ok_header_urls.append(log_entry)
+                                elif is_svg:
+                                    if "[OK SVG]" in log_entry:
+                                        ok_svg_urls.append(log_entry)
+                                    else:
+                                        broken_svg_urls.append(log_entry)
+                                elif is_image:
+                                    if "[OK IMAGE]" in log_entry:
+                                        ok_image_urls.append(log_entry)
+                                    else:
+                                        broken_image_urls.append(log_entry)
+                                elif is_root_relative:
+                                    if "[OK ROOT-RELATIVE]" in log_entry:
+                                        ok_root_relative_urls.append(log_entry)
+                                    else:
+                                        broken_root_relative_urls.append(log_entry)
+                                else:
+                                    if "[OK RELATIVE]" in log_entry:
+                                        ok_relative_urls.append(log_entry)
+                                    else:
+                                        # Use the new log message format for categorization
+                                        if "[BROKEN RELATIVE WITH ANCHOR]" in log_entry:
+                                            broken_relative_urls_with_anchor.append(log_entry)
+                                        elif "[BROKEN RELATIVE WITHOUT ANCHOR]" in log_entry:
+                                            broken_relative_urls_without_anchor.append(log_entry)
+                        
+                        except ValueError as e:
+                            # Handle URL parsing errors for the cleaned URL
+                            error_message = str(e)
+                            log_entry = f"{Colors.FAIL}[MALFORMED URL] {url_clean} - Error: {error_message} (in file: {file_path}){Colors.ENDC}"
+                            print(log_entry)
+                            broken_absolute_urls.append(log_entry)
+                
+                except ValueError as e:
+                    # Handle URL parsing errors
+                    error_message = str(e)
+                    if "Invalid IPv6 URL" in error_message:
+                        log_entry = f"{Colors.FAIL}[MALFORMED URL] {url} - Invalid IPv6 URL format (in file: {file_path}){Colors.ENDC}"
+                    else:
+                        log_entry = f"{Colors.FAIL}[MALFORMED URL] {url} - Error: {error_message} (in file: {file_path}){Colors.ENDC}"
+                    print(log_entry)
+                    broken_absolute_urls.append(log_entry)
                 
                 # Write to log file (real-time monitoring)
                 log.write(strip_ansi_escape_codes(log_entry) + "\n")
@@ -1045,7 +1392,8 @@ def main():
                         len(broken_root_relative_urls) + 
                         len(broken_image_urls) + 
                         len(broken_svg_urls) + 
-                        len(broken_header_urls))
+                        len(broken_header_urls)
+                        )
         
         total_ok = len(ok_absolute_urls) + len(ok_relative_urls) + len(ok_root_relative_urls) + len(ok_image_urls) + len(ok_svg_urls) + len(ok_header_urls)
         total_links = total_broken + total_ok
@@ -1326,17 +1674,6 @@ def main():
     else:
         print(f"{Colors.OKGREEN}✅  All links are valid!{Colors.ENDC}")
         sys.exit(0)  # Exit code 0 signals that all links are valid
-
-def find_files_in_directory(directory):
-    """Find all supported files in the given directory."""
-    files_to_check = []
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            file_ext = os.path.splitext(file)[1].lower()
-            # Check if this is a supported file type
-            if file_ext in SUPPORTED_FILE_TYPES:
-                files_to_check.append(os.path.join(root, file))
-    return files_to_check
 
 if __name__ == "__main__":
     main()
