@@ -84,7 +84,6 @@ configuration:
           # or add more 'not isActivitySender' conditions in the MAIN BRANCH PROTECTION rule below
           - isActivitySender:
                 user: likamrat
-                issueAuthor: True
         then:
           # Add a label to track exempt PRs for auditing purposes
           - addLabel:
@@ -123,8 +122,8 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          # Exclude exempt users - make sure they don't match this rule
-          # Add additional 'not' conditions here for each exempt user
+          # Only apply to non-exempt users - this is critical to prevent rule overlap
+          # This condition must match the exact opposite of the exempt user rule
           - not:
               isActivitySender:
                   user: likamrat
