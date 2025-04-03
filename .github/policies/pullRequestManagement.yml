@@ -86,12 +86,12 @@ configuration:
               filesMatchPattern:
                   pattern: ^$
           # Exclude specific team members or teams from this rule
-          # This allows maintainers to directly push to main when needed
+          # This allows trusted maintainers to push directly to main when needed
           - not:
               or:
                 # Exclude specific users by username
                 - isAuthoredBy:
-                    author: likamrat
+                    author: likamrat  # Replace with actual username
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
