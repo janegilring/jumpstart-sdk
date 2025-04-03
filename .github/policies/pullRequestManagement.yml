@@ -79,14 +79,11 @@ configuration:
           # Ensure the target branch is main
           - targetsBranch:
                 branch: main
-          # Check if the author can be exempted
-          # This condition allows maintainers to bypass the main branch protection
+          # Check if the author is likamrat (the exempt user)
           # To add more exempt users, create additional similar rules with different usernames
           # or add more 'not isActivitySender' conditions in the MAIN BRANCH PROTECTION rule below
           - isActivitySender:
                 user: likamrat
-          - isActivitySender:
-                user: kianaharris4
         then:
           # Add a label to track exempt PRs for auditing purposes
           - addLabel:
@@ -125,8 +122,8 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          # Only apply to non-exempt users - this is critical to prevent rule overlap
-          # This condition must match the exact opposite of the exempt user rule
+          # Exclude exempt users - make sure they don't match this rule
+          # Add additional 'not' conditions here for each exempt user
           - not:
               isActivitySender:
                   user: likamrat
@@ -187,6 +184,3 @@ onFailure:
   # Can be configured to notify admins or log errors
 onSuccess:
   # Can be configured to perform actions upon successful execution
-
-
-  # -----TESTING-----#
