@@ -86,8 +86,8 @@ configuration:
               filesMatchPattern:
                   pattern: ^$
           # Exclude specific user from this rule - simplified condition structure
-          - isAuthoredBy:
-              user: likamrat
+              isAuthoredBy:
+                  user: likamrat
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
