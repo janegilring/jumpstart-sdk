@@ -89,7 +89,7 @@ configuration:
               or:
                 - isActivitySender:
                     user: likamrat
-                    issueAuthor: True
+                    issueAuthor: False
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
