@@ -91,7 +91,7 @@ configuration:
               or:
                 # Exclude specific users by username
                 - isAuthoredBy:
-                    author: likamrat  # Replace with actual username
+                    user: likamrat  # Replace with actual username
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
