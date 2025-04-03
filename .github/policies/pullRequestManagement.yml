@@ -121,10 +121,10 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          # # Exclude exempt users - make sure they don't match this rule
-          # - not:
-          #     isActivitySender:
-          #         user: likamrat
+          # Exclude exempt users - make sure they don't match this rule
+          - not:
+              isActivitySender:
+                  user: likamrat
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
