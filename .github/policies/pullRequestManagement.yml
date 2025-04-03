@@ -86,10 +86,6 @@ configuration:
               filesMatchPattern:
                   pattern: ^$
           - or:
-              - activitySenderHasPermission:
-                  permission: Admin
-              - activitySenderHasPermission:
-                  permission: Write
               - isAuthoredBy:
                   user: likamrat
         then:
