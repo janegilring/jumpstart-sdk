@@ -77,7 +77,9 @@ configuration:
               - isAction:
                   action: Opened
               - isAction:
-                  action: Synchronize                  
+                  action: Synchronize
+              - isAuthoredBy: # Exclude specific user from this rule - simplified condition structure
+                  user: likamrat    
           # Ensure the target branch is main
           - targetsBranch:
                 branch: main
@@ -85,10 +87,6 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          # Exclude specific user from this rule - simplified condition structure
-          - or:
-              - isAuthoredBy:
-                  user: likamrat
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
