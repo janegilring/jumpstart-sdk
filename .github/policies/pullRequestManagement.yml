@@ -85,7 +85,6 @@ configuration:
           - not:
               filesMatchPattern:
                   pattern: ^$
-          - not:
               or:
                 - isActivitySender:
                     user: likamrat
