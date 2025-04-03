@@ -84,6 +84,8 @@ configuration:
           # or add more 'not isActivitySender' conditions in the MAIN BRANCH PROTECTION rule below
           - isActivitySender:
                 user: likamrat
+          - isActivitySender:
+                user: kianaharris4
         then:
           # Add a label to track exempt PRs for auditing purposes
           - addLabel:
@@ -127,6 +129,9 @@ configuration:
           - not:
               isActivitySender:
                   user: likamrat
+          - not:
+              isActivitySender:
+                  user: kianaharris4                 
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
