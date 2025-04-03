@@ -122,9 +122,8 @@ configuration:
                   pattern: ^$
           # Exclude exempt users - make sure they don't match this rule
           - not:
-              equals:
-                  value1: ${issueAuthor}
-                  value2: likamrat
+            - isActivitySender:
+                  user: likamrat
         then:
           # Provide educational feedback about our branch workflow
           - addReply:
