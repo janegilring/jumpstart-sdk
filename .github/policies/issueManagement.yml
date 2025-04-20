@@ -197,19 +197,19 @@ configuration:
           - removeLabel:
               label: Needs-Triage
 
-    #   - description: Add Needs-Triage label when issue has no assignees
-    #     if:
-    #       - payloadType: Issues
-    #       - and:
-    #           - isAction:
-    #               action: isNotAssigned
-    #           - not:
-    #               isAssignedToSomeone
-    #           - isNotLabeledWith:
-    #               label: Needs-Triage
-    #     then:
-    #       - addLabel:
-    #           label: Needs-Triage
+      - description: Add Needs-Triage label when issue has no assignees
+        if:
+          - payloadType: Issues
+          - and:
+              - isAction:
+                  action: isNotAssigned
+              - not:
+                  isAssignedToSomeone
+              - isNotLabeledWith:
+                  label: Needs-Triage
+        then:
+          - addLabel:
+              label: Needs-Triage
 
       # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
