@@ -198,6 +198,9 @@ configuration:
               label: Needs-Triage
 
       - description: Add Needs-Triage label when issue has no assignees
+        filters:
+        - isNotLabeledWith:
+            label: Needs-Triage
         if:
           - payloadType: Issues
           - and:
@@ -205,9 +208,6 @@ configuration:
             #       action: Assigned
                 - not:
                     isAssignedToSomeone
-        filters:
-        - isNotLabeledWith:
-            label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
