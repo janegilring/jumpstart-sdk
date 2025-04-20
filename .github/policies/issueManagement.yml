@@ -206,8 +206,8 @@ configuration:
                 - not:
                     isAssignedToSomeone
         filters:
-                - isNotLabeledWith:
-                    label: Needs-Triage
+        - isNotLabeledWith:
+            label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
