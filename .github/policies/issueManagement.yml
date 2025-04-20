@@ -183,7 +183,7 @@ configuration:
 
       # ---------------------------------------------------------------------------
       # ISSUE ASSIGNMENT HANDLING
-      # Manages labels when issues are assigned or unassigned
+      # Manages labels when issues are assigned
       # ---------------------------------------------------------------------------
       - description: Remove Needs-Triage label when issue is assigned
         if:
@@ -195,21 +195,6 @@ configuration:
                   label: Needs-Triage
         then:
           - removeLabel:
-              label: Needs-Triage
-
-      - description: Add Needs-Triage label when issue has no assignees
-        filters:
-        - isNotLabeledWith:
-            label: Needs-Triage
-        if:
-          - payloadType: Issues
-          - and:
-            #   - isAction:
-            #       action: Assigned
-                - not:
-                    isAssignedToSomeone
-        then:
-          - addLabel:
               label: Needs-Triage
 
       # ---------------------------------------------------------------------------
