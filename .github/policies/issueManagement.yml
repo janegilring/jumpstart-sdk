@@ -203,10 +203,10 @@ configuration:
           - and:
             #   - isAction:
             #       action: Assigned
-              - not:
-                  - isAssignedToSomeone
-              - isNotLabeledWith:
-                  label: Needs-Triage
+                not:
+                    isAssignedToSomeone
+                # - isNotLabeledWith:
+                #   label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
