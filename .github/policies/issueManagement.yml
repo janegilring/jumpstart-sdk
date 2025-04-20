@@ -182,6 +182,22 @@ configuration:
                 Thank you for your collaboration!
 
       # ---------------------------------------------------------------------------
+      # ISSUE ASSIGNMENT HANDLING
+      # Manages labels when issues are assigned
+      # ---------------------------------------------------------------------------
+      - description: Remove Needs-Triage label when issue is assigned
+        if:
+          - payloadType: Issues
+          - and:
+              - isAction:
+                  action: Assigned
+              - hasLabel:
+                  label: Needs-Triage
+        then:
+          - removeLabel:
+              label: Needs-Triage
+
+      # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
       # Manages issues identified as duplicates in comments
       # Streamlines issue tracking by consolidating duplicates
