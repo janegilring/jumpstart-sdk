@@ -201,13 +201,12 @@ configuration:
         if:
           - payloadType: Issues
           - and:
-              - isAction:
-                     not:
-                     action: Assigned
-            #   - not:
-            #       isAssignedToSomeone
-            #   - isNotLabeledWith:
-            #       label: Needs-Triage
+            #   - isAction:
+            #       action: Assigned
+              - not:
+                  isAssignedToSomeone
+              - isNotLabeledWith:
+                  label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
