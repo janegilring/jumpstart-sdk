@@ -201,8 +201,6 @@ configuration:
         if:
           - payloadType: Issues
           - and:
-              - isAction:
-                  action: isNotAssigned
               - not:
                   isAssignedToSomeone
               - isNotLabeledWith:
