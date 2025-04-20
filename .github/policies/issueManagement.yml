@@ -204,7 +204,7 @@ configuration:
             #   - isAction:
             #       action: Assigned
               - not:
-                  isAssignedToSomeone
+                  - isAssignedToSomeone
               - isNotLabeledWith:
                   label: Needs-Triage
         then:
