@@ -203,7 +203,7 @@ configuration:
           - and:
             #   - isAction:
             #       action: Assigned
-                not:
+                - not:
                     isAssignedToSomeone
                 # - isNotLabeledWith:
                 #   label: Needs-Triage
