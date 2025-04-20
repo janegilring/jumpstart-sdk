@@ -202,7 +202,7 @@ configuration:
           - payloadType: Issues
           - and:
               - isAction:
-                   - not:
+                     not:
                      action: Assigned
             #   - not:
             #       isAssignedToSomeone
