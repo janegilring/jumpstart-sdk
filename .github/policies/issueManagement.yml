@@ -226,17 +226,16 @@ configuration:
 
       - description: Add back Needs-Attention label if removed from assigned issues
         if:
-          - payloadType: Issues
-          - and:
-             - not:
-                isAssignedToSomeone          
+          - payloadType: Issues          
           - and:
              - not:
                 hasLabel:
                     label: Needs-Attention
+          - isAssignedToSomeone
         then:
           - addLabel:
               label: Needs-Attention
+
       # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
       # Manages issues identified as duplicates in comments
