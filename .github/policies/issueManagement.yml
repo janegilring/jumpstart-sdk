@@ -228,8 +228,7 @@ configuration:
         if:
           - payloadType: Issues
           - and:
-             - not:
-                isAssignedToSomeone          
+               isAssignedToSomeone          
           - and:
              - not:
                 hasLabel:
@@ -237,6 +236,7 @@ configuration:
         then:
           - addLabel:
               label: Needs-Attention
+
       # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
       # Manages issues identified as duplicates in comments
