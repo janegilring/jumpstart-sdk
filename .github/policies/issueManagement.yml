@@ -210,6 +210,8 @@ configuration:
         then:
           - addLabel:
               label: Needs-Triage
+          - removeLabel:
+              label: Needs-Attention    
 
       - description: Handle when Needs-Triage is manually added to assigned issues
         if:
