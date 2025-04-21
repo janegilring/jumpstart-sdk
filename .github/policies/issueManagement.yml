@@ -211,6 +211,21 @@ configuration:
           - addLabel:
               label: Needs-Triage
 
+      - description: Handle when Needs-Triage is manually added to assigned issues
+        if:
+          - payloadType: Issues
+          - and:
+              - isAction:
+                  action: labelAdded
+              - hasLabel:
+                  label: Needs-Triage
+              - isAssignedToSomeone
+        then:
+          - removeLabel:
+              label: Needs-Triage
+          - addLabel:
+              label: Needs-Attention
+
       # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
       # Manages issues identified as duplicates in comments
