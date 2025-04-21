@@ -205,6 +205,8 @@ configuration:
             #       action: Assigned
                 - not:
                     isAssignedToSomeone
+                - isNotLabeledWith:
+                    label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
