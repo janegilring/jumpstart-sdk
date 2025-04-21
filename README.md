@@ -1,4 +1,4 @@
-# 🚀 Arc Jumpstart SDK
+# ⚡ Arc Jumpstart SDK
 
 Welcome to the Arc Jumpstart SDK repository! This SDK provides tools, scripts, and documentation to enhance your Arc Jumpstart contribution experience more efficient and enojyable.
 
