@@ -215,8 +215,6 @@ configuration:
         if:
           - payloadType: Issues
           - and:
-            #   - isAction:
-            #       action: labelAdded
               - hasLabel:
                   label: Needs-Triage
               - isAssignedToSomeone
