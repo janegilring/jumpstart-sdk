@@ -205,8 +205,8 @@ configuration:
                 isAssignedToSomeone
           - and:
              - not:
-                islabeledWith:
-                    label: Needs-Triage               
+                hasLabel::
+                    label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
