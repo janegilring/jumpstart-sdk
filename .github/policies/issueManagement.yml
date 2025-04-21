@@ -228,9 +228,12 @@ configuration:
         if:
           - payloadType: Issues
           - and:
-              - isNotLabeledWith:
-                  label: Needs-Attention
-              - isAssignedToSomeone
+             - not:
+                isAssignedToSomeone          
+          - and:
+             - not:
+                hasLabel:
+                    label: Needs-Attention
         then:
           - addLabel:
               label: Needs-Attention
