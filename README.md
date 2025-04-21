@@ -21,6 +21,10 @@ The Arc Jumpstart SDK contains:
    - ⭐ Best practices
    - 🔌 API references
 
+## 📑 Repository Policies
+
+See [REPO_POLICIES.md](./REPO_POLICIES.md) for details on automated pull request and issue management policies.
+
 ## 🧰 Available Tools
 
 | Tool Name | Description |

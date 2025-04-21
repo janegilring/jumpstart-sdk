@@ -1,37 +1,3 @@
-# "jumpstart-sdk" GitHub Repository Policies
+# 📑 Repository Policies
 
-This document summarizes the automated policies for managing Pull Requests (PRs) and Issues in the Arc Jumpstart repository. These policies help maintain a high-quality, collaborative, and efficient workflow for contributors and maintainers.
-
----
-
-## Pull Request Management
-
-| Policy                        | What Happens                                                                                  | Why?                                                      | Contributor Experience                                   |
-|-------------------------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------|---------------------------------------------------------|
-| **Empty PR Detection**        | PRs with no file changes are automatically closed.                                           | Prevents clutter from empty PRs.                          | PR is closed with a comment explaining why.             |
-| **Exempt Maintainers for Main Branch** | Certain maintainers can open PRs directly to the `main` branch.                                 | Allows trusted maintainers to bypass branch protection.    | Exempt maintainers receive a special message and label. |
-| **Main Branch Protection**    | PRs targeting `main` (except from exempt maintainers) are closed and redirected to `canary`. | Enforces workflow: all changes go through `canary` first. | PR is closed with a comment explaining the process.     |
-| **(Optional) Welcome Message**| (Currently commented out) New PRs would receive a welcome message with guidelines.           | Sets expectations and provides guidance.                  | -                                                       |
-
----
-
-## Issue Management
-
-| Policy                        | What Happens                                                                                  | Why?                                                      | Contributor Experience                                   |
-|-------------------------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------|---------------------------------------------------------|
-| **New Issue Triage**          | New issues are labeled for triage and categorized by keywords in the title.                  | Improves visibility and routing.                          | Issues with "bug" or "feature" get a tailored reply.    |
-| **Issue Lifecycle Management**| Labels are updated when issues are closed, reopened, or marked as duplicates. Authors can comment `/unresolve` to reopen. | Keeps issue status and labels accurate.                   | Clear communication and ability to reopen issues.       |
-| **Assignment Handling**       | Labels are managed automatically when issues are assigned or unassigned.                     | Ensures issues needing attention are visible.             | Maintainers and contributors see up-to-date labels.     |
-| **Duplicate Issue Handling**  | Issues/PRs identified as duplicates (via comments) are closed and labeled.                   | Prevents duplicate tracking and consolidates discussion.  | PR/issue is closed with a comment and label.            |
-| **Stale Issue Management**    | Issues needing author feedback and inactive for 7 days are labeled "No-Recent-Activity". If still inactive after another 7 days, the issue is closed. Resolved issues are auto-closed after 7 days of inactivity. | Keeps the issue tracker clean and focused.                | Reminders and auto-closure with clear communication.    |
-
----
-
-## Error Handling
-
-- **On Failure/Success:**  
-  Hooks are available for future notification or logging, but are not currently configured.
-
----
-
-_These policies are designed to foster a welcoming, organized, and productive open-source community. Thank you for your collaboration!_
+The policies documentation has moved to [../REPO_POLICIES.md](../REPO_POLICIES.md).
