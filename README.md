@@ -30,6 +30,7 @@ See [REPO_POLICIES.md](./REPO_POLICIES.md) for details on automated pull request
 | Tool Name | Description |
 |-----------|-------------|
 | [URL Checker](/tools/url-checker/README.md) | A robust URL validation tool that scans codebase files for links and verifies their validity |
+| [Release Notes Automator](/tools/release-notes-automator/README.md) | Automates the generation and management of release notes for your projects |
 | *More tools coming soon...* | |
 
 ## 🔗 Related Repositories
