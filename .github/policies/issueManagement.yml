@@ -182,6 +182,19 @@ configuration:
 
                 Thank you for your collaboration!
 
+      - description: Label issues closed via linked PR completion as Release-Candidate
+        # When an issue is closed because a linked PR was merged, add the Release-Candidate label
+        if:
+          - payloadType: Issue_Comment
+          - isAction:
+              action: Closed
+          - and:
+             isPullRequest
+
+        then:
+          - addLabel:
+              label: Release-Candidate
+
       # ---------------------------------------------------------------------------
       # ISSUE ASSIGNMENT HANDLING
       # Manages labels when issues are assigned or unassigned
