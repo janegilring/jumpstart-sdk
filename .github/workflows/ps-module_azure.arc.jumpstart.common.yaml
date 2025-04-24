@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  buildFolderName: output
+  buildFolderName: ./powershell/modules/Azure.Arc.Jumpstart.Common/output
   buildArtifactName: output
   testResultFolderName: testResults
   defaultBranch: main
