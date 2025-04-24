@@ -186,8 +186,8 @@ configuration:
         # When an issue is closed because a linked PR was merged, add the Release-Candidate label
         if:
         - payloadType: Issues
-        - isAction:
-            action: Closed
+        # - isAction:
+        #     action: Closed
         - and:
             isNotInAnyMilestone
 
