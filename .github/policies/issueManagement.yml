@@ -288,9 +288,7 @@ configuration:
           - payloadType: Issues
           - and:
               - isOpen
-              - not:
-                  and:
-                    isNotInAnyMilestone
+              - isNotInAnyMilestone
         then:
           - addLabel:
               label: Missing-Milestone
