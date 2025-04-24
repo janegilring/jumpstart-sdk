@@ -189,7 +189,8 @@ configuration:
         #   - isAction:
         #       action: Closed
           - and:
-              isPullRequest: true
+            - or:
+                isPullRequest: true
 
         then:
           - addLabel:
