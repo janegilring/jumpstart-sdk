@@ -339,7 +339,8 @@ configuration:
       - isIssue 
       - and:
         - not:
-            - isNotInAnyMilestone
+            - isInMilestone:
+                milestone: milestoneName
         - hasLabel:
             label: Issue-Addressed
         - hasLabel:
