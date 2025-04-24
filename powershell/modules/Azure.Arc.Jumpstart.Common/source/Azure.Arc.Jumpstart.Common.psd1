@@ -24,10 +24,10 @@ GUID = 'a0b1c2d3-e4f5-6a7b-8c9d-0e1f2a3b4c5d'
 Author = 'Azure Arc Jumpstart'
 
 # Company or vendor of this module
-CompanyName = 'Azure Arc Jumpstart'
+CompanyName = 'Microsoft'
 
 # Copyright statement for this module
-Copyright = '(c) Azure Arc Jumpstart. All rights reserved.'
+Copyright = '(c) Microsoft. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Azure Arc Jumpstart module for common functions'
