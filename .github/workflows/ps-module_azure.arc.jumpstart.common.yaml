@@ -38,7 +38,7 @@ jobs:
           gitversion | tee gitversion.json
           VERSION=$(jq -r .FullSemVer gitversion.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "##[set-output name=version;]$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Build & Package Module
         run: pwsh ./powershell/modules/Azure.Arc.Jumpstart.Common/build.ps1 -ResolveDependency -tasks pack
