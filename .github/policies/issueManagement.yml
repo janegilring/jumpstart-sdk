@@ -188,7 +188,8 @@ configuration:
         - payloadType: Issues
         - isAction:
             action: Closed
-        - isNotInAnyMilestone
+        - and: 
+            - isNotInAnyMilestone
 
 
         then:
