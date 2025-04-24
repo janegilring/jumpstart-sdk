@@ -136,7 +136,7 @@ configuration:
         - and:
             - commentContains:
                 pattern: "(?i)unresolve"
-                isRegex: True
+                isRegex: true
         then:
         # Remove resolution labels to indicate unresolved status
         - removeLabel:
@@ -181,6 +181,21 @@ configuration:
                 We've reopened this issue because we need more information from you or we identified it is not completely resolved.
 
                 Thank you for your collaboration!
+
+      - description: Label issues closed via linked PR completion as Release-Candidate
+        # When an issue is closed because a linked PR was merged, add the Release-Candidate label
+        if:
+        - payloadType: Issue_Comment
+        - isAction:
+            action: Created
+        - and:
+            - commentContains:
+                pattern: "pull request that will close this issue"
+                isRegex: true
+
+        then:
+          - addLabel:
+              label: Release-Candidate
 
       # ---------------------------------------------------------------------------
       # ISSUE ASSIGNMENT HANDLING
@@ -253,7 +268,7 @@ configuration:
             # Look for various forms of "duplicate" in comments
             - commentContains:
                 pattern: "(?i)duplicat(e|ed|ing)?"
-                isRegex: True
+                isRegex: true
         then:
         - addReply:
             reply: |
