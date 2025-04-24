@@ -182,20 +182,6 @@ configuration:
 
                 Thank you for your collaboration!
 
-      - description: Label issues closed via linked PR completion as Release-Candidate
-        # When an issue is closed because a linked PR was merged, add the Release-Candidate label
-        if:
-        - payloadType: Issues
-        # - isAction:
-        #     action: Closed
-        - and:
-            isNotInAnyMilestone
-
-
-        then:
-          - addLabel:
-              label: Missing-Milestone
-
       # ---------------------------------------------------------------------------
       # ISSUE ASSIGNMENT HANDLING
       # Manages labels when issues are assigned or unassigned
@@ -298,6 +284,27 @@ configuration:
     # Periodic tasks that run on defined schedules to maintain repository hygiene
     # ===========================================================================
     scheduledSearches:
+    # ---------------------------------------------------------------------------
+    # CLOSED ISSUE MILESTONE CHECK
+    # Labels closed issues that are missing a milestone for tracking completeness
+    # ---------------------------------------------------------------------------
+    - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
+      # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
+      frequencies:
+      - hourly:
+          hour: 7
+      filters:
+      # Only target issues that are closed, have no milestone, and are marked as addressed.
+      - isIssue
+      - isClosed
+      - isNotInAnyMilestone
+      - hasLabel:
+          label: Issue-Addressed
+      actions:
+      # Add label to highlight missing milestone.
+      - addLabel:
+          label: Missing-Milestone
+
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
     # Automatically closes issues that need feedback but have no activity
