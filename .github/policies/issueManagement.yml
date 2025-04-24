@@ -290,7 +290,7 @@ configuration:
               - isOpen
               - not:
                   and:
-                    - isNotInAnyMilestone
+                    isNotInAnyMilestone
         then:
           - addLabel:
               label: Missing-Milestone
