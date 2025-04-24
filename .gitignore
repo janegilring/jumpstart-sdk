@@ -410,3 +410,7 @@ backups/
 *_backups/
 *-backup/
 *.bak/
+
+# Release Notes Automator
+tools/release-notes-automator/_index.md
+tools/release-notes-automator/_index_dummy.md

@@ -1,3 +1,4 @@
+# See repository policies at ../../REPO_POLICIES.md
 # ===========================================================================
 # GitHub Repository Pull Request Management Policy
 # ===========================================================================
@@ -158,29 +159,30 @@ configuration:
       # Provides guidance and sets expectations for PR authors
       # This helps set the tone for collaboration and ensures contributors understand the process
       # ---------------------------------------------------------------------------
-      - description: 
-         When a PR is opened, post a message to the author
-        if:
-          # Only process new pull requests
-          - payloadType: Pull_Request
-          - isAction:
-              action: Opened
-          # Exclude empty PRs since they're handled by a different rule
-          - not:
-              filesMatchPattern:
-                pattern: ^$
-          # Exclude PRs targeting main branch - these are handled by a separate rule
-          - not:
-              targetsBranch:
-                branch: main
-        then:
-          # Add automated welcome message with contribution guidelines
-          - addReply:
-              reply: |
-                👋 Hello ${issueAuthor},
+      # - description: 
+      #    When a PR is opened, post a message to the author
+      #   if:
+      #     # Only process new pull requests
+      #     - payloadType: Pull_Request
+      #     - isAction:
+      #         action: Opened
+      #     # Exclude empty PRs since they're handled by a different rule
+      #     - not:
+      #         filesMatchPattern:
+      #           pattern: ^$
+      #     # Exclude PRs targeting main branch - these are handled by a separate rule
+      #     - not:
+      #         targetsBranch:
+      #           branch: main
+      #   then:
+      #     # Add automated welcome message with contribution guidelines
+      #     - addReply:
+      #         reply: |
+      #           👋 Hello ${issueAuthor},
 
-                Thank you for your pull request, a team member will review it soon. All issues and pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
-                By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
+      #           Thank you for your pull request, a team member will review it soon. All issues and pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
+      
+      #           By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
 
 # ---------------------------------------------------------------------------
 # ERROR HANDLING CONFIGURATION
