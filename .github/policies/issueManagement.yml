@@ -296,7 +296,7 @@ configuration:
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
-      - isClosed
+      - isClose
     #   - isNotInAnyMilestone
       - hasLabel:
           label: Issue-Addressed
