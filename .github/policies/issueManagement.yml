@@ -287,9 +287,11 @@ configuration:
         if:
           - payloadType: Issues          
           - and:
-                hasLabel:
-                    label: Issue-Addressed
-          - isAssignedToSomeone
+              - isAction:
+                  action: Closed
+              - hasLabel:
+                  label: Issue-Addressed
+        #   - isAssignedToSomeone
         then:
           - addLabel:
               label: Missing-Milestone
