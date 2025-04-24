@@ -188,7 +188,6 @@ configuration:
           - payloadType: Issue_Comment
         #   - isAction:
         #       action: Closed
-          - and:
             isPullRequest: true
 
         then:
