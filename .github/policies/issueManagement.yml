@@ -188,10 +188,7 @@ configuration:
         - payloadType: Issue_Comment
         - isAction:
             action: Created
-        - and:
-            - commentContains:
-                pattern: "pull request that will close this issue"
-                isRegex: false
+        - isPullRequest
 
         then:
           - addLabel:
