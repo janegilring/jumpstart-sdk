@@ -338,11 +338,11 @@ configuration:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue 
       - isInMilestone:
-            milestone: milestoneName
-      - hasLabel:
-            label: Issue-Addressed
-      - hasLabel:
-            label: Missing-Milestone
+             milestone: milestoneName
+    #   - hasLabel:
+    #         label: Issue-Addressed
+    #   - hasLabel:
+    #         label: Missing-Milestone
       actions:
       # Add label to highlight missing milestone.
       - removeLabel:
