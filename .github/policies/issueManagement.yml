@@ -191,7 +191,7 @@ configuration:
         - and:
             - commentContains:
                 pattern: "pull request that will close this issue"
-                isRegex: true
+                isRegex: false
 
         then:
           - addLabel:
