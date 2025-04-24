@@ -185,14 +185,15 @@ configuration:
       - description: Label issues closed via linked PR completion as Release-Candidate
         # When an issue is closed because a linked PR was merged, add the Release-Candidate label
         if:
-        - payloadType: Issue_Comment
+        - payloadType: Issues
         - isAction:
-            action: Created
-        - isPullRequest
+            action: Closed
+        - isNotInAnyMilestone
+
 
         then:
           - addLabel:
-              label: Release-Candidate
+              label: Missing-Milestone
 
       # ---------------------------------------------------------------------------
       # ISSUE ASSIGNMENT HANDLING
