@@ -317,7 +317,7 @@ configuration:
       # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
       frequencies:
       - hourly:
-          hour: 7
+          hour: 8
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
