@@ -297,8 +297,9 @@ configuration:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
       - isNotInAnyMilestone      
-      - not:
-        - isOpen
+      - and:
+        - not:
+            isOpen
 
       - hasLabel:
           label: Issue-Addressed
