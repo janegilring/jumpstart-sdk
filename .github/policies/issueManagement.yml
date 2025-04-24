@@ -189,8 +189,7 @@ configuration:
         #   - isAction:
         #       action: Closed
           - and:
-            - or:
-                isPullRequest: true
+            isPullRequest: true
 
         then:
           - addLabel:
@@ -267,7 +266,7 @@ configuration:
             # Look for various forms of "duplicate" in comments
             - commentContains:
                 pattern: "(?i)duplicat(e|ed|ing)?"
-                isRegex: True
+                isRegex: true
         then:
         - addReply:
             reply: |
