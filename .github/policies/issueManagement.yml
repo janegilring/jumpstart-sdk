@@ -189,7 +189,7 @@ configuration:
         - isAction:
             action: Closed
         - and: 
-            - isNotInAnyMilestone
+            isNotInAnyMilestone
 
 
         then:
