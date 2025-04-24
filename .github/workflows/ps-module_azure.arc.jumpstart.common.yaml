@@ -125,7 +125,7 @@ jobs:
           path: ${{ env.buildFolderName }}
 
       - name: Run Tests
-        run: pwsh ./build.ps1 -tasks test
+        run: pwsh ./powershell/modules/Azure.Arc.Jumpstart.Common/build.ps1 -tasks test
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
@@ -180,7 +180,7 @@ jobs:
           path: ${{ env.buildFolderName }}
 
       - name: Publish Release
-        run: pwsh ./build.ps1 -tasks publish
+        run: pwsh ./powershell/modules/Azure.Arc.Jumpstart.Common/build.ps1 -tasks publish
         env:
           GitHubToken: ${{ secrets.GITHUB_TOKEN }}
           GalleryApiToken: ${{ secrets.POSH_GALLERY_API }}
