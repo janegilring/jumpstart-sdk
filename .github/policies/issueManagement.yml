@@ -189,7 +189,7 @@ configuration:
         - isAction:
             action: Created
         - and:
-            - ispullRequest: true
+            - ispullRequest
 
         then:
           - addLabel:
