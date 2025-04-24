@@ -291,7 +291,7 @@ configuration:
                   action: Closed
               - hasLabel:
                   label: Issue-Addressed
-        #   - isAssignedToSomeone
+          - isNotInAnyMilestone
         then:
           - addLabel:
               label: Missing-Milestone
