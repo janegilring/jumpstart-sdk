@@ -323,7 +323,7 @@ configuration:
       - isIssue
       - isNotInAnyMilestone      
       - not:
-        - isOpen
+         isOpen
 
       - hasLabel:
           label: Issue-Addressed
