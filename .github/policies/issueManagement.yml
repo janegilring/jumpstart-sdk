@@ -136,7 +136,7 @@ configuration:
         - and:
             - commentContains:
                 pattern: "(?i)unresolve"
-                isRegex: True
+                isRegex: true
         then:
         # Remove resolution labels to indicate unresolved status
         - removeLabel:
@@ -185,10 +185,11 @@ configuration:
       - description: Label issues closed via linked PR completion as Release-Candidate
         # When an issue is closed because a linked PR was merged, add the Release-Candidate label
         if:
-          - payloadType: Issue_Comment
-        #   - isAction:
-        #       action: Closed
-            isPullRequest: true
+        - payloadType: Issue_Comment
+        - isAction:
+            action: Created
+        - and:
+            - ispullRequest: true
 
         then:
           - addLabel:
