@@ -314,9 +314,8 @@ configuration:
       - isIssue
     #   - hasLabel:
     #       label: Missing-Milestone      
-      - and:
-        - isNotPartOfMilestone:
-                milestone: ${milestone}
+      - isPartOfMilestone:
+            milestone: ${milestone}
 
       
 
