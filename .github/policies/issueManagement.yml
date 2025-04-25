@@ -322,9 +322,7 @@ configuration:
         #         label: Issue-Addressed
 
       actions:
-      # Add label to highlight missing milestone.
-      - removeLabel:
-          label: Missing-Milestone
+      - closeIssue
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
