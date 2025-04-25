@@ -310,10 +310,9 @@ configuration:
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         if:
         - payloadType: Issues
-        - and:
-            - isAssignedToSomeone
-            - isPartOfMilestone:
-                milestone: ${milestone}
+        - isAssignedToSomeone
+        - isPartOfMilestone:
+            milestone: ${milestone}
         then:
         - removeLabel:
             label: Missing-Milestone
