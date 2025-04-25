@@ -304,7 +304,7 @@ configuration:
 
         - and:
             - isAssignedToSomeone
-            - isPartOfAnyMilestone
+            - isNotPartOfAnyMilestone
         # - hasLabel:
         #     label: Missing-Milestone
         then:
