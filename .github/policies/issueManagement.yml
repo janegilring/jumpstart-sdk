@@ -312,7 +312,8 @@ configuration:
         - payloadType: Issues
         - and:
             - isAssignedToSomeone
-            - isPartOfAnyMilestone
+            - isPartOfMilestone:
+                milestone: ${milestone}
         then:
         - removeLabel:
             label: Missing-Milestone
