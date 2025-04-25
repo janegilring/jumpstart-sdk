@@ -279,31 +279,6 @@ configuration:
         - addLabel:
             label: Resolution-Duplicate
  
-
-
-
-
-    #   - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
-    #     if:
-    #       - payloadType: Issues          
-    #       - and:
-    #           - isAction:
-    #               action: Closed
-    #           - hasLabel:
-    #               label: Issue-Addressed
-    #       - isNotInAnyMilestone
-    #     then:
-    #       - addLabel:
-    #           label: Missing-Milestone
-
-
-
-
-
-
-
-
-
     # ===========================================================================
     # SCHEDULED SEARCHES
     # Periodic tasks that run on defined schedules to maintain repository hygiene
@@ -321,12 +296,34 @@ configuration:
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
-      - isNotInAnyMilestone      
+      - isNotInAnyMilestone
       - hasLabel:
           label: Issue-Addressed
       actions:
       # Add label to highlight missing milestone.
       - addLabel:
+          label: Missing-Milestone
+
+    - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
+      # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      # Only target issues that are closed, have no milestone, and are marked as addressed.
+      - isIssue
+      - isPartOfMilestone:
+             milestone: "*"
+
+      
+
+        # - hasLabel:
+        #         label: Issue-Addressed
+      - hasLabel:
+            label: Missing-Milestone
+      actions:
+      # Add label to highlight missing milestone.
+      - removeLabel:
           label: Missing-Milestone
 
     # ---------------------------------------------------------------------------
