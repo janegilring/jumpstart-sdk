@@ -301,8 +301,10 @@ configuration:
         - or: 
             - isAction:
                 action: Closed
+
         - and:
-            - isNotInAnyMilestone
+            - not:
+                - isPartOfAnyMilestone
             - hasLabel:
                 label: Missing-Milestone
         then:
