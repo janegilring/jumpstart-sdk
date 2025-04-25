@@ -284,7 +284,6 @@ configuration:
 
       - description: Add Resolution-Duplicate label to issues or PRs that are identified as duplicates
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
-        triggerOnOwnActions: false
         if:
         - payloadType: Issues
         - or:
