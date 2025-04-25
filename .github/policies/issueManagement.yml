@@ -314,8 +314,8 @@ configuration:
       - isIssue
     #   - hasLabel:
     #       label: Missing-Milestone      
-      - isNotPartOfMilestone:
-            milestone: May
+      - isPartOfMilestone:
+            milestone: April
 
       
 
