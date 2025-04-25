@@ -304,11 +304,11 @@ configuration:
 
         - and:
             - isAssignedToSomeone
-            - isNotInAnyMilestone
+            # - isNotInAnyMilestone
         # - hasLabel:
         #     label: Missing-Milestone
         then:
-        - removeLabel:
+        - addLabel:
             label: Missing-Milestone
 
 
