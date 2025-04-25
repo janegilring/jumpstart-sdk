@@ -314,7 +314,7 @@ configuration:
       - isOpen
       - isIssue   
       - isPartOfMilestone:
-            milestone: ${milestone}
+          milestone: ${milestone}
 
       
 
@@ -322,7 +322,9 @@ configuration:
         #         label: Issue-Addressed
 
       actions:
-      - closeIssue
+      # Add label to highlight missing milestone.
+      - removeLabel:
+          label: Missing-Milestone
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
