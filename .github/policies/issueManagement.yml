@@ -292,9 +292,8 @@ configuration:
                 action: Closed
             - isAction:
                 action: Reopened
-            - and:
-                - isNotPartInAnyMilestone
-                - isAssignedToSomeone
+            - isNotPartInAnyMilestone
+            - isAssignedToSomeone
         then:
         - addLabel:
             label: Missing-Milestone
