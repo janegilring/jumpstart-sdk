@@ -298,6 +298,8 @@ configuration:
         if:
         - payloadType: Issues
         - isNotInAnyMilestone
+        - hasLabel:
+            label: Issue-Addressed
         then:
         - addLabel:
             label: Missing-Milestone
