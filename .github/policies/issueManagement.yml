@@ -302,9 +302,9 @@ configuration:
         #     - isAction:
         #         action: Closed
 
-
-        - isAssignedToSomeone
-        - isNotInAnyMilestone
+        - and:
+            - isAssignedToSomeone
+            - isNotInAnyMilestone
         # - hasLabel:
         #     label: Missing-Milestone
         then:
