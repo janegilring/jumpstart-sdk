@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - powershell/modules/Azure.Arc.Jumpstart.Common/source
     tags:
       - 'v*'
     paths-ignore:
