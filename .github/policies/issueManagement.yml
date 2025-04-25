@@ -289,7 +289,7 @@ configuration:
         - payloadType: Issues
         - or:
             - isAction:
-                action: Closed                             
+                action: Closed
             - isPartOfAnyMilestone
         - hasLabel:
             label: Missing-Milestone
