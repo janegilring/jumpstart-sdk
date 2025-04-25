@@ -314,6 +314,7 @@ configuration:
       - isIssue
       - isPartOfMilestone:
              milestone: milestone
+             isRegex: true
       
 
         # - hasLabel:
