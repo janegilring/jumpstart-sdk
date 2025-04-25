@@ -288,8 +288,8 @@ configuration:
         - or:
             - isAction:
                 action: Closed
-            # - isNotPartInAnyMilestone
             - isAssignedToSomeone
+        - isNotPartInAnyMilestone            
         then:
         - addLabel:
             label: Missing-Milestone
