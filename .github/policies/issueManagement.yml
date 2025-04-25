@@ -312,8 +312,7 @@ configuration:
         - payloadType: Issues
         - and:
             - isAssignedToSomeone
-            - or:
-                - isPartOfAnyMilestone
+            - isPartOfAnyMilestone
         then:
         - removeLabel:
             label: Missing-Milestone
