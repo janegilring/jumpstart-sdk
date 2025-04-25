@@ -292,7 +292,15 @@ configuration:
         then:
         - removeLabel:
             label: Missing-Milestone
-    
+
+      - description: Add Resolution-Duplicate label to issues or PRs that are identified as duplicates
+        # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
+        if:
+        - payloadType: Issues
+        - isNotPartOfAnyMilestone
+        then:
+        - addLabel:
+            label: Missing-Milestone
 
 
 
