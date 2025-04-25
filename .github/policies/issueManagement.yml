@@ -355,8 +355,9 @@ configuration:
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue   
-      - isPartOfAnyMilestone
-
+    #   - isPartOfAnyMilestone THIS IS NOT WORKING
+      - isPartOfMilestone:
+            milestone: milestone
       
 
 
