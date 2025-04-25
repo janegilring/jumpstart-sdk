@@ -314,7 +314,7 @@ configuration:
       - isIssue
       - and:
         - not:
-          - isNotInAnyMilestone
+            - isNotInAnyMilestone
     #   - hasLabel:
     #         label: Issue-Addressed
     #   - hasLabel:
