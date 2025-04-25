@@ -356,9 +356,11 @@ configuration:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue   
     #   - isPartOfAnyMilestone THIS IS NOT WORKING
-      - isPartOfMilestone:
-            milestone: milestone
-      
+    #   - isPartOfMilestone: THIS IS NOT WORKING
+    #         milestone: milestone
+
+      - isNotPartOfMilestone:
+            milestone: x
 
 
       actions:
