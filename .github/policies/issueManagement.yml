@@ -311,12 +311,12 @@ configuration:
           hour: 1
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
+      - isOpen
       - isIssue
-      - isPartOfMilestone:
-            milestone: ${milestone}      
     #   - hasLabel:
     #       label: Missing-Milestone      
-
+      - isPartOfMilestone:
+            milestone: ${milestone}
 
       
 
