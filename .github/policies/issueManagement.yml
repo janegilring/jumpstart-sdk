@@ -287,7 +287,14 @@ configuration:
         triggerOnOwnActions: false
         if:
         - payloadType: Issues
-        - isPartOfAnyMilestone
+        - or:
+            - isAction:
+                action: Opened
+            - isAction:
+                action: Closed
+            - isAction:
+                action: Reopened                                
+            - isPartOfAnyMilestone
         - hasLabel:
             label: Missing-Milestone
         then:
