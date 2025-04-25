@@ -285,9 +285,16 @@ configuration:
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         if:
         - payloadType: Issues
-        - and:
-            - isNotPartInAnyMilestone
-            - isAssignedToSomeone
+        - or:
+            - isAction:
+                action: Opened
+            - isAction:
+                action: Closed
+            - isAction:
+                action: Reopened
+            - and:
+                - isNotPartInAnyMilestone
+                - isAssignedToSomeone
         then:
         - addLabel:
             label: Missing-Milestone
