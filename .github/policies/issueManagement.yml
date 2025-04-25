@@ -314,7 +314,7 @@ configuration:
       - isOpen
       - isIssue   
       - isPartOfMilestone:
-          milestone: ${milestone}
+          milestone: April
 
       
 
