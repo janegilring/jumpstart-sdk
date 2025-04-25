@@ -288,7 +288,7 @@ configuration:
         - or:
             - isAction:
                 action: Closed
-            - isNotPartInAnyMilestone
+            # - isNotPartInAnyMilestone
             - isAssignedToSomeone
         then:
         - addLabel:
