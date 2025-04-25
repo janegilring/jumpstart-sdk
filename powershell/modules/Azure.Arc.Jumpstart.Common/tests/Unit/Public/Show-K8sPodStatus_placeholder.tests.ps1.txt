@@ -1,0 +1,36 @@
+BeforeAll {
+    $script:ModuleName = 'Azure.Arc.Jumpstart.Common'
+
+    Import-Module -Name $script:ModuleName
+}
+
+AfterAll {
+    # Unload the module being tested so that it doesn't impact any other tests.
+    Get-Module -Name $script:ModuleName -All | Remove-Module -Force
+}
+
+Describe Get-Something {
+    BeforeAll {
+        Mock -CommandName Show-K8sPodStatus -MockWith {
+            # This return the value passed to the Get-PrivateFunction parameter $PrivateData.
+            $PrivateData
+        } -ModuleName $ModuleName
+    }
+
+    Context 'When passing values using named parameters' {
+
+        It 'Should return a single object' {
+            $return = Show-K8sPodStatus -kubeconfig 'value' -clusterName 'value'
+
+            ($return | Measure-Object).Count | Should -Be 1
+        }
+
+        It 'Should return the correct string value' {
+            $return = Show-K8sPodStatus -kubeconfig 'value' -clusterName 'value'
+
+            $return | Should -Be 'value'
+        }
+    }
+
+
+}
