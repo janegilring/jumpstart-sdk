@@ -312,11 +312,14 @@ configuration:
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
-      - and:
-        - hasLabel:
-                label: Issue-Addressed
-        - hasLabel:
-                label: Missing-Milestone
+      - isNotPartOfMilestone:
+                    milestone: milestone
+      
+
+        # - hasLabel:
+        #         label: Issue-Addressed
+        # - hasLabel:
+        #         label: Missing-Milestone
       actions:
       # Add label to highlight missing milestone.
       - removeLabel:
