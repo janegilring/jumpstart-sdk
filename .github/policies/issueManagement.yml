@@ -278,7 +278,30 @@ configuration:
         # Add resolution label
         - addLabel:
             label: Resolution-Duplicate
- 
+
+
+
+
+      - description: Add Resolution-Duplicate label to issues or PRs that are identified as duplicates
+        # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
+        triggerOnOwnActions: false
+        if:
+        - payloadType: Issues
+        - or:
+            - isAction:
+                action: Closed
+            - isPartOfAnyMilestone
+        - hasLabel:
+            label: Missing-Milestone
+        then:
+        - removeLabel:
+            label: Missing-Milestone
+    
+
+
+
+
+
     # ===========================================================================
     # SCHEDULED SEARCHES
     # Periodic tasks that run on defined schedules to maintain repository hygiene
@@ -304,17 +327,17 @@ configuration:
       - addLabel:
           label: Missing-Milestone
 
-    - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
-      # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      # Only target issues that are closed, have no milestone, and are marked as addressed.
-      - isOpen
-      - isIssue   
-      - isPartOfMilestone:
-          milestone: April
+    # - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
+    #   # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   # Only target issues that are closed, have no milestone, and are marked as addressed.
+    #   - isOpen
+    #   - isIssue   
+    #   - isPartOfMilestone:
+    #       milestone: April
 
       
 
