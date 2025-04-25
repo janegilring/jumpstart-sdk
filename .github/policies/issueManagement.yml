@@ -313,7 +313,8 @@ configuration:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
       - not:
-        - isNotInAnyMilestone    
+        - and:
+          - isNotInAnyMilestone    
     #   - hasLabel:
     #         label: Issue-Addressed
     #   - hasLabel:
