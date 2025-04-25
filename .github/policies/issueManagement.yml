@@ -285,7 +285,11 @@ configuration:
     #     # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
     #     if:
     #     - payloadType: Issues
-    #     - isNotPartInAnyMilestone
+    #     - and:
+    #         - isAssignedToSomeone
+    #         - isPartOfMilestone:
+    #             milestone: milestone
+
     #     then:
     #     - addLabel:
     #         label: Missing-Milestone
@@ -294,19 +298,18 @@ configuration:
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         if:
         - payloadType: Issues
-        - or: 
-            - isAction:
-                action: Opened
-            - isAction:
-                action: Closed
-            - isAction:
-                action: Reopened
+        # - or: 
+        #     - isAction:
+        #         action: Closed
+
         - and:
-            - isPartOfAnyMilestone
-            - hasLabel:
-                label: Missing-Milestone
+            - isAssignedToSomeone
+            - not:
+                isPartOfAnyMilestone
+        # - hasLabel:
+        #     label: Missing-Milestone
         then:
-        - removeLabel:
+        - addLabel:
             label: Missing-Milestone
 
 
@@ -324,21 +327,21 @@ configuration:
     # CLOSED ISSUE MILESTONE CHECK
     # Labels closed issues that are missing a milestone for tracking completeness
     # ---------------------------------------------------------------------------
-    - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
-      # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      # Only target issues that are closed, have no milestone, and are marked as addressed.
-      - isIssue
-      - isNotInAnyMilestone
-    #   - hasLabel:
-    #       label: Issue-Addressed
-      actions:
-      # Add label to highlight missing milestone.
-      - addLabel:
-          label: Missing-Milestone
+    # - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
+    #   # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   # Only target issues that are closed, have no milestone, and are marked as addressed.
+    #   - isIssue
+    #   - isNotInAnyMilestone
+    # #   - hasLabel:
+    # #       label: Issue-Addressed
+    #   actions:
+    #   # Add label to highlight missing milestone.
+    #   - addLabel:
+    #       label: Missing-Milestone
 
     # - description: Label closed issues missing a milestone. Closed issues without any milestone and labeled with Issue-Addressed will be marked as Missing-Milestone.
     #   # This runs daily at 7:00 and helps ensure all closed issues are properly tracked with milestones.
