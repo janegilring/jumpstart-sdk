@@ -298,16 +298,10 @@ configuration:
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         if:
         - payloadType: Issues
-        # - or: 
-        #     - isAction:
-        #         action: Closed
-
         - and:
             - isAssignedToSomeone
             - not:
                 isPartOfAnyMilestone
-        # - hasLabel:
-        #     label: Missing-Milestone
         then:
         - addLabel:
             label: Missing-Milestone
@@ -316,15 +310,10 @@ configuration:
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         if:
         - payloadType: Issues
-        # - or: 
-        #     - isAction:
-        #         action: Closed
-
         - and:
             - isAssignedToSomeone
-            - isPartOfAnyMilestone
-        # - hasLabel:
-        #     label: Missing-Milestone
+            - or:
+                - isPartOfAnyMilestone
         then:
         - removeLabel:
             label: Missing-Milestone
