@@ -286,7 +286,8 @@ configuration:
         if:
         - payloadType: Issues
         - isAssignedToSomeone
-            # - isNotPartOfAnyMilestone
+        - isPartOfMilestone:
+             milestone: milestone
 
         then:
         - addLabel:
