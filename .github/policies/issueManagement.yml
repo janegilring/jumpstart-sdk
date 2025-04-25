@@ -303,7 +303,8 @@ configuration:
         #         action: Closed
 
         - not:
-            - isPartOfAnyMilestone
+            - isPartOfMilestone:
+                milestone: milestone
         - and:
             - isAssignedToSomeone        
         # - hasLabel:
