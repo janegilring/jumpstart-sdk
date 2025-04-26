@@ -315,9 +315,8 @@ configuration:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
       - isNotInAnyMilestone
-      - isAssignedTo
-    #   - hasLabel:
-    #       label: Issue-Addressed
+      - not:
+         - isNotAssigned
       actions:
       # Add label to highlight missing milestone.
       - addLabel:
