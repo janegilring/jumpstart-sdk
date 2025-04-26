@@ -313,6 +313,7 @@ configuration:
           hour: 6
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
+      - isOpen
       - isIssue
       - isNotAssigned      
       - isNotInAnyMilestone
@@ -328,6 +329,7 @@ configuration:
           hour: 1
       filters:
       # Only target issues that have a milestone.
+      - isOpen
       - isIssue   
     #   - isPartOfAnyMilestone THIS IS NOT WORKING
     #   - isPartOfMilestone: THIS IS NOT WORKING
