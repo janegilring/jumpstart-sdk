@@ -328,15 +328,13 @@ configuration:
           hour: 1
       filters:
       # Only target issues that have a milestone.
-      - isPartOfMilestone:
-            milestone: ${milestone}
       - isIssue   
     #   - isPartOfAnyMilestone THIS IS NOT WORKING
     #   - isPartOfMilestone: THIS IS NOT WORKING
     #         milestone: milestone
 
-    #   - isNotPartOfMilestone:
-    #         milestone: INVALID-MILESTONE
+      - isNotPartOfMilestone:
+            milestone: INVALID-MILESTONE
             # This intentionally represents a milestone that does not exist and will never be matched.
 
       actions:
