@@ -279,11 +279,7 @@ configuration:
         - addLabel:
             label: Resolution-Duplicate
 
-
-
-
-      # THIS IS WORKING  
-      - description: Add Resolution-Duplicate label to issues or PRs that are identified as duplicates
+      - description: Add Missing-Milestone label to assigned issues without a milestone
         # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
         if:
         - payloadType: Issues
@@ -294,8 +290,6 @@ configuration:
         then:
         - addLabel:
             label: Missing-Milestone
-
-
 
     # ===========================================================================
     # SCHEDULED SEARCHES
@@ -335,7 +329,7 @@ configuration:
     #         milestone: milestone
 
       - isNotPartOfMilestone:
-            milestone: INVALID-MILESTONE
+            milestone: INVALID
             # This intentionally represents a milestone that does not exist and will never be matched.
 
       actions:
