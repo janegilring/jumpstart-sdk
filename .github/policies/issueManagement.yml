@@ -326,11 +326,10 @@ configuration:
       # This runs daily at 6:00 and helps ensure all closed issues are properly tracked with milestones.
       frequencies:
       - hourly:
-          hour: 1
+          hour: 6
       filters:
       # Only target issues that have a milestone.
-      - isOpen
-      - isIssue   
+      - isIssue
     #   - isPartOfAnyMilestone THIS IS NOT WORKING
     #   - isPartOfMilestone: THIS IS NOT WORKING
     #         milestone: milestone
