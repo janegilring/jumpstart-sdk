@@ -315,8 +315,9 @@ configuration:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
       - isNotInAnyMilestone
-      - not:
-         - isNotAssigned
+      - isAssignedTo:
+            user: INVALID-USER
+            # This intentionally represents a user that does not exist and will never be matched.
       actions:
       # Add label to highlight missing milestone.
       - addLabel:
