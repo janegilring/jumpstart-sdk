@@ -314,8 +314,8 @@ configuration:
       filters:
       # Only target issues that are closed, have no milestone, and are marked as addressed.
       - isIssue
+      - isNotAssigned      
       - isNotInAnyMilestone
-      - isNotAssigned
       actions:
       # Add label to highlight missing milestone.
       - addLabel:
