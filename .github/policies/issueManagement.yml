@@ -284,7 +284,7 @@ configuration:
       # Labels assigned issues that are missing a milestone for tracking completeness
       # ---------------------------------------------------------------------------
       - description: Add Missing-Milestone label to assigned issues without a milestone
-        # This rule detects comments containing variations of the word "duplicate" and marks the issue accordingly
+        # This rule helps ensure all assigned issues are tracked with a milestone
         if:
         - payloadType: Issues
         - and:
