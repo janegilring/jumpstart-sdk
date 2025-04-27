@@ -338,6 +338,8 @@ configuration:
         if:
         - payloadType: Issues
         - isAction:
+            action: Closed
+        - isAction:
             action: Reopened
         - isPartOfAnyMilestone
         - isAssignedToSomeone    
