@@ -330,25 +330,6 @@ configuration:
       - removeLabel:
           label: Missing-Milestone
 
-    # # ---------------------------------------------------------------------------
-    # # CLOSED ISSUE NEEDS ATTENTION CHECK
-    # # Removes the "Needs-Attention" label from issues that have been addressed
-    # # ---------------------------------------------------------------------------
-    # - description: Remove the "Needs-Attention" label from issues that have been addressed.
-    #   # This runs daily at 6:00 and helps ensure all closed issues are properly tracked with milestones by removing the "Missing-Milestone" label.
-    #   frequencies:
-    #   - hourly:
-    #       hour: 1
-    #   filters:
-    #   # Only target issues that have been addressed
-    #   - isIssue
-    #   - hasLabel:
-    #       label: Issue-Addressed
-    #   actions:
-    #   # Remove label to highlight that the issue has been addressed
-    #   - removeLabel:
-    #       label: Needs-Attention
-
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
     # Automatically closes issues that need feedback but have no activity
