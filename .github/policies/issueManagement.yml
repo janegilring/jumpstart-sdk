@@ -333,14 +333,15 @@ configuration:
         - addLabel:
             label: Missing-Milestone
 
-      - description: Remove the "Missing-Milestone" label from assigned, reopened issues with a milestone.
-        # This rule helps ensure all assigned, reopened issues are tracked with a milestone by removing the "Missing-Milestone" label
+      - description: Remove the "Missing-Milestone" label from assigned, closed or reopened issues with a milestone.
+        # This rule helps ensure all closed or reopened issues are tracked with a milestone by removing the "Missing-Milestone" label
         if:
         - payloadType: Issues
-        - isAction:
-            action: Closed
-        - isAction:
-            action: Reopened
+        - or: 
+            - isAction:
+                action: Closed
+            - isAction:
+                action: Reopened
         - isPartOfAnyMilestone
         - isAssignedToSomeone    
         then:
