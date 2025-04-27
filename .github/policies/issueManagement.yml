@@ -2,7 +2,7 @@
 # ===========================================================================
 # GitHub Repository Issue Management Policy
 # ===========================================================================
-# Purpose: Automate issue workflow management for the Arc Jumpstart repository
+# Purpose: Automate issue workflow management for this repository
 # This policy handles issue creation, triage, labeling, and lifecycle management
 id: 
 name: GitOps.PullRequestIssueManagement
@@ -343,7 +343,7 @@ configuration:
       # Only target issues that have been addressed
       - isIssue
       - hasLabel:
-            label: Issue-Addressed
+          label: Issue-Addressed
       actions:
       # Remove label to highlight that the issue has been addressed
       - removeLabel:
