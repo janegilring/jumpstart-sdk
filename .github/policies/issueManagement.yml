@@ -164,6 +164,7 @@ configuration:
         - payloadType: Issues
         - isAction:
             action: Reopened
+        - isAssignedToSomeone
         then:
         # Clear resolution labels when an issue is reopened
         - removeLabel:
@@ -275,14 +276,6 @@ configuration:
         # Add the "Resolution-Duplicate" label
         - addLabel:
             label: Resolution-Duplicate
-
-      - description: Add the "In-PR-Closure" label to issues that will be closed when the PR is merged
-        # This rule adds the "In-PR-Closure" label to issues referenced for closure by a PR using the inPrLabel action
-        if:
-          - payloadType: Issues
-        then:
-          - inPrLabel:
-              label: Release-Candidate
 
       # ---------------------------------------------------------------------------
       # ISSUE MILESTONE CHECK
