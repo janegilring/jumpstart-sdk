@@ -167,14 +167,14 @@ configuration:
         - not:
             isAssignedToSomeone
         then:
-        # Clear resolution and duplicate labels when an issue is reopened
+        # Clear resolution labels when an issue is reopened
         - removeLabel:
             label: Issue-Addressed
         - removeLabel:
             label: Resolution-Duplicate
         - removeLabel:
             label: Missing-Milestone
-        # Mark for team attention by adding the "Needs-Attention" label
+        # Mark for triage by adding the "Needs-Triage" label
         - addLabel:
             label: Needs-Triage
         - addReply:
