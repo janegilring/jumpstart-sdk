@@ -339,10 +339,8 @@ configuration:
         - payloadType: Issues
         - isAction:
             action: Reopened
-        - and:
-            - isAssignedToSomeone
-            - isInMilestone:
-                    milestone: ${milestone}
+        - isPartOfAnyMilestone
+        - isAssignedToSomeone    
         then:
         - removeLabel:
             label: Missing-Milestone
