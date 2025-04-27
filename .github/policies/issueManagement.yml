@@ -157,7 +157,32 @@ configuration:
 
         - reopenIssue
 
-      - description: Add the "Needs-Attention" label to reopened issues.
+      - description: Add the "Needs-Triage" label to reopened issues that are not assigned.
+        # Ensures reopened issues get proper attention from maintainers by adding the "Needs-Triage" label
+        triggerOnOwnActions: false
+        if:
+        - payloadType: Issues
+        - isAction:
+            action: Reopened
+        - not:
+            isAssignedToSomeone
+        then:
+        # Clear resolution and duplicate labels when an issue is reopened
+        - removeLabel:
+            label: Issue-Addressed
+        - removeLabel:     
+        # Mark for team attention by adding the "Needs-Attention" label
+        - addLabel:
+            label: Needs-Triage
+        - addReply:
+            reply: |
+                👋 Hello ${issueAuthor},
+
+                We've reopened this issue because we need more information from you or we identified it is not completely resolved.
+
+                Thank you for your collaboration!
+
+      - description: Add the "Needs-Attention" label to reopened issues that are assigned.
         # Ensures reopened issues get proper attention from maintainers by adding the "Needs-Attention" label
         triggerOnOwnActions: false
         if:
