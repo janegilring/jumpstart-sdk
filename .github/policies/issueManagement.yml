@@ -208,9 +208,7 @@ configuration:
                     label: Needs-Triage
         then:
           - addLabel:
-              label: Needs-Triage
-        #   - removeLabel:
-        #       label: Needs-Attention    
+              label: Needs-Triage   
 
       - description: Handle when the "Needs-Triage" label is manually added to assigned issues. Remove the "Needs-Triage" label and add the "Needs-Attention" label.
         if:
@@ -310,6 +308,7 @@ configuration:
     # Periodic tasks that run on defined schedules to maintain repository hygiene
     # ===========================================================================
     scheduledSearches:
+
     # ---------------------------------------------------------------------------
     # CLOSED ISSUE MILESTONE CHECK
     # Removes the "Missing-Milestone" label from closed issues that have a milestone
@@ -332,22 +331,25 @@ configuration:
           label: Missing-Milestone
 
 
-    # - description: 
-    #   # Remove Needs-Attention label from issues that have been addressed
-    #   frequencies:
-    #   - hourly:
-    #       hour: 6
-    #   filters:
-    #   # Only target issues that have been addressed.
-    #   - isIssue
-    #   - isAssignedTo:
-    #         user: ${issueAuthor}
-    #   - hasLabel:
-    #         label: Issue-Addressed
-    #   actions:
-    #   # Remove label to highlight that the issue has been addressed.
-    #   - removeLabel:
-    #       label: Needs-Attention
+    # ---------------------------------------------------------------------------
+    # CLOSED ISSUE NEEDS ATTENTION CHECK
+    # Removes the "Needs-Attention" label from issues that have been addressed
+    # ---------------------------------------------------------------------------
+
+    - description: Remove the "Needs-Attention" label from issues that have been addressed.
+      # This runs daily at 6:00 and helps ensure all closed issues are properly tracked with milestones by removing the "Missing-Milestone" label.
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      # Only target issues that have been addressed
+      - isIssue
+      - hasLabel:
+            label: Issue-Addressed
+      actions:
+      # Remove label to highlight that the issue has been addressed
+      - removeLabel:
+          label: Needs-Attention
 
 
     # ---------------------------------------------------------------------------
@@ -368,7 +370,6 @@ configuration:
           label: Needs-Author-Feedback
       - hasLabel:
           label: No-Recent-Activity
-      # Exclude issues that may need longer response times
       - isNotLabeledWith:
           label: Feature-Request
       - isNotLabeledWith:
@@ -384,13 +385,15 @@ configuration:
       - removeLabel:
           label: Needs-Triage
 
-    - description: Add the "No-Recent-Activity" label to issues that have not had any activity for 7 days.
+    - description: Add the "No-Recent-Activity" label to issues that have not had any activity for 7 days
+      # This runs daily at 6:00 and adds the "No-Recent-Activity" label to issues that have not had any activity for 7 days
       # First warning stage before closing stale issues by adding the "No-Recent-Activity" label
       # Timeline: Day 7 - Add warning label, Day 14 - Close issue if no response
       frequencies:
       - hourly:
           hour: 6
       filters:
+        # Only target issues that are open and need author feedback
       - isIssue
       - isOpen
       - hasLabel:
@@ -412,12 +415,14 @@ configuration:
 
                 Thank you for your collaboration!
 
-    - description: Close issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label.
+    - description: Close issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
+      # This runs daily at 6:00 and closes issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
       # Auto-close resolved issues after waiting period for any objections by adding the "Issue-Addressed" label
       frequencies:
       - hourly:
           hour: 6
       filters:
+        # Only target issues that are open and have been addressed
       - isIssue
       - isOpen
       - hasLabel:
