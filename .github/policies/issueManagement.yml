@@ -215,6 +215,7 @@ configuration:
       # Manages labels when issues are assigned or unassigned
       # ---------------------------------------------------------------------------
       - description: Remove the "Needs-Triage" label when issue is assigned.
+        # This rule ensures that all open issues assigned to someone are marked for attention by removing the "Needs-Triage" label
         if:
           - payloadType: Issues
           - and:
@@ -227,6 +228,7 @@ configuration:
               label: Needs-Triage
 
       - description: Add the "Needs-Triage" label when issue has no assignees.
+        # This rule ensures that all open issues that are not assigned to someone are marked for triage by adding the "Needs-Triage" label
         if:
           - payloadType: Issues
           - and:
@@ -240,9 +242,11 @@ configuration:
           - addLabel:
               label: Needs-Triage   
 
-      - description: Handle when the "Needs-Triage" label is manually added to assigned issues. Remove the "Needs-Triage" label and add the "Needs-Attention" label.
+      - description: Handle when the "Needs-Triage" label is manually added to assigned issues that are open. Remove the "Needs-Triage" label and add the "Needs-Attention" label.
+        # This rule ensures that all open issues assigned to someone are marked for attention by removing the "Needs-Triage" label and adding the "Needs-Attention" label
         if:
           - payloadType: Issues
+          - isOpen
           - and:
               - hasLabel:
                   label: Needs-Triage
@@ -253,9 +257,11 @@ configuration:
           - addLabel:
               label: Needs-Attention
 
-      - description: Add back the "Needs-Attention" label if removed from assigned issues.
+      - description: Add the "Needs-Attention" label to assigned issues that are open and do not have the "Needs-Attention" label.
+        # This rule ensures that all open issues assigned to someone are marked for attention by adding the "Needs-Attention" label
         if:
-          - payloadType: Issues          
+          - payloadType: Issues
+          - isOpen        
           - and:
              - not:
                 hasLabel:
