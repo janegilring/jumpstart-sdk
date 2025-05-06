@@ -49,22 +49,23 @@ configuration:
                     This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
 
                     Thank you for your collaboration!
-
+                    
+            # Add abandoned label to track automatically closed non-form GitHub issues
             - addLabel:
                 label: Abandoned                    
             - closeIssue
-                # Add abandoned label to track automatically closed non-form GitHub issues
+
         
           # Apply project-specific labels based on issue title keywords
-        #   # This helps route issues to the right team members by adding the appropriate label
-        #     - if:
-        #         # Identify if the issue title contains the word "arcbox" (not case insensitive) and add the "ArcBox" label
-        #         - titleContains:
-        #                 pattern: "(?i)arcbox"
-        #                 isRegex: true
-        #         - then:
-        #             - addLabel:
-        #                 label: ArcBox
+          # This helps route issues to the right team members by adding the appropriate label
+            - if:
+                # Identify if the issue title contains the word "arcbox" (not case insensitive) and add the "ArcBox" label
+                - titleContains:
+                    pattern: "(?i)arcbox"
+                    isRegex: true
+                - then:
+                    - addLabel:
+                        label: ArcBox
         #     - if:
         #         # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
         #         - titleContains:
