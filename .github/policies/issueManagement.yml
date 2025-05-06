@@ -273,11 +273,8 @@ configuration:
           - and:
              - not:
                 - isAssignedToSomeone
-                - and:
-                    # - isOpen
-                    - not:
-                        hasLabel:
-                            label: Abandoned
+                - hasLabel:
+                    label: Abandoned
         #   - and:
         #      - not:
         #         hasLabel:
