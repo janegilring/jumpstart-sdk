@@ -57,6 +57,7 @@ configuration:
         
           # Apply project-specific labels based on issue title keywords
           # This helps route issues to the right team members by adding the appropriate label
+        or:
             - if:
             # Identify if the issue title contains the word "arcbox" (not case insensitive) and add the "ArcBox" label
                 - titleContains:
@@ -92,7 +93,7 @@ configuration:
                     - addLabel:
                         label: Bug-Issue
                     - addLabel:
-                        label: Test-Label                    
+                        label: Test-Lable                    
                 # Add a reply to the issue author with helpful guidance
                     - addReply:
                         reply: |
