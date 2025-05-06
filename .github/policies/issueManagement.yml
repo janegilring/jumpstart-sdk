@@ -30,10 +30,31 @@ configuration:
           - payloadType: Issues
           - isAction:
               action: Opened
-        then:
-          # Start the triage process for all new issues by adding the "Needs-Triage" label
-          - addLabel:
-              label: Test-Label
+          - and:
+              # Check if the issue does not have the "Bug-Issue" label
+              - not:
+                  hasLabel:
+                      label: Bug-Issue
+              # Check if the issue does not have the "Feature-Request" label
+              - not:
+                  hasLabel:
+                      label: Feature-Request
+            then:
+            - addReply:
+                reply: |
+                    👋 Hello ${issueAuthor},
+
+                    This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
+
+                    This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
+
+                    Thank you for your collaboration!
+                    
+            - closeIssue
+            # Add abandoned label to track automatically closed non-form GitHub issues
+            - addLabel:
+                label: Abandoned
+        
           # Apply project-specific labels based on issue title keywords
           # This helps route issues to the right team members by adding the appropriate label
           - if:
@@ -70,6 +91,8 @@ configuration:
                 # Add the "Bug-Issue" label to issues with the word "bug" in the title
                 - addLabel:
                     label: Bug-Issue
+                - addLabel:
+                    label: Needs-Triage                    
                 # Add a reply to the issue author with helpful guidance
                 - addReply:
                     reply: |
@@ -86,6 +109,8 @@ configuration:
                 # Add the "Feature-Request" label to issues with the word "feature" in the title
                 - addLabel:
                     label: Feature-Request
+                - addLabel: 
+                    label: Needs-Triage
                 # Add a reply to the feature request author with expectations    
                 - addReply:
                     reply: |
@@ -94,40 +119,37 @@ configuration:
                       Thank you for your feature request, a team member will review it soon. All issues and pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
                       By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
 
-      - description: Auto-close issues without Bug-Issue or Feature-Request labels
-        # This policy ensures that any issue opened without the required labels is automatically closed.
-        # It acts as a fail-safe mechanism to enforce the use of GitHub Issue Forms for proper categorization.
-        if:
-          - payloadType: Issues
-          - isAction:
-              action: Opened
-          - and:
-              # Check if the issue does not have the "Bug-Issue" label
-              - not:
-                  hasLabel:
-                      label: Bug-Issue
-              # Check if the issue does not have the "Feature-Request" label
-              - not:
-                  hasLabel:
-                      label: Feature-Request
-        then:
-        - addReply:
-            reply: |
-                👋 Hello ${issueAuthor},
+    #   - description: Auto-close issues without Bug-Issue or Feature-Request labels
+    #     # This policy ensures that any issue opened without the required labels is automatically closed.
+    #     # It acts as a fail-safe mechanism to enforce the use of GitHub Issue Forms for proper categorization.
+    #     if:
+    #       - payloadType: Issues
+    #       - isAction:
+    #           action: Opened
+    #       - and:
+    #           # Check if the issue does not have the "Bug-Issue" label
+    #           - not:
+    #               hasLabel:
+    #                   label: Bug-Issue
+    #           # Check if the issue does not have the "Feature-Request" label
+    #           - not:
+    #               hasLabel:
+    #                   label: Feature-Request
+    #     then:
+    #     - addReply:
+    #         reply: |
+    #             👋 Hello ${issueAuthor},
 
-                This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
+    #             This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
 
-                This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
+    #             This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
 
-                Thank you for your collaboration!
+    #             Thank you for your collaboration!
                 
-        - closeIssue
-        # Remove all working labels
-        # - removeLabel:
-        #     label: Needs-Triage
-        # Add abandoned label to track automatically closed non-form GitHub issues
-        - addLabel:
-            label: Abandoned
+    #     - closeIssue
+    #     # Add abandoned label to track automatically closed non-form GitHub issues
+    #     - addLabel:
+    #         label: Abandoned
 
       # ---------------------------------------------------------------------------
       # ISSUE LIFECYCLE MANAGEMENT
