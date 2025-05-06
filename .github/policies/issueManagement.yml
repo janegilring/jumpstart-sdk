@@ -30,14 +30,10 @@ configuration:
           - payloadType: Issues
           - isAction:
               action: Opened
-          - and:
-                - not:
-                    hasLabel:
-                        label: Abandoned
         then:
           # Start the triage process for all new issues by adding the "Needs-Triage" label
           - addLabel:
-              label: Needs-Triage
+              label: Test-Label
           # Apply project-specific labels based on issue title keywords
           # This helps route issues to the right team members by adding the appropriate label
           - if:
