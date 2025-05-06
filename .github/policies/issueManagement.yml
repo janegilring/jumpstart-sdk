@@ -39,21 +39,21 @@ configuration:
               - not:
                   hasLabel:
                       label: Feature-Request
-            then:
-            - addReply:
-                reply: |
-                    👋 Hello ${issueAuthor},
+                then:
+                - addReply:
+                    reply: |
+                        👋 Hello ${issueAuthor},
 
-                    This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
+                        This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
 
-                    This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
+                        This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
 
-                    Thank you for your collaboration!
-                    
-            - closeIssue
-            # Add abandoned label to track automatically closed non-form GitHub issues
-            - addLabel:
-                label: Abandoned
+                        Thank you for your collaboration!
+
+                - addLabel:
+                    label: Abandoned                    
+                - closeIssue
+                # Add abandoned label to track automatically closed non-form GitHub issues
         
           # Apply project-specific labels based on issue title keywords
           # This helps route issues to the right team members by adding the appropriate label
