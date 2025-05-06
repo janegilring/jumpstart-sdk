@@ -30,6 +30,10 @@ configuration:
           - payloadType: Issues
           - isAction:
               action: Opened
+          - and:
+                - not:
+                    hasLabel:
+                        label: Abandoned
         then:
           # Start the triage process for all new issues by adding the "Needs-Triage" label
           - addLabel:
@@ -123,8 +127,8 @@ configuration:
                 
         - closeIssue
         # Remove all working labels
-        - removeLabel:
-            label: Needs-Triage
+        # - removeLabel:
+        #     label: Needs-Triage
         # Add abandoned label to track automatically closed non-form GitHub issues
         - addLabel:
             label: Abandoned
