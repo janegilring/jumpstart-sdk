@@ -32,9 +32,9 @@ configuration:
               action: Opened
           - and:
               # Check if the issue does not have the "Bug-Issue" label
-            #   - not:
-            #       hasLabel:
-            #           label: Bug-Issue
+              - not:
+                  hasLabel:
+                      label: Bug-Issue
               # Check if the issue does not have the "Feature-Request" label
               - not:
                   hasLabel:
@@ -92,7 +92,7 @@ configuration:
                     - addLabel:
                         label: Bug-Issue
                     - addLabel:
-                        label: Needs-Triage                    
+                        label: Test-Label                    
                 # Add a reply to the issue author with helpful guidance
                     - addReply:
                         reply: |
