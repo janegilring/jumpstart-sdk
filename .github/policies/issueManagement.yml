@@ -54,34 +54,35 @@ configuration:
             - addLabel:
                 label: Abandoned                    
             - closeIssue
-        
-          # Apply project-specific labels based on issue title keywords
-          # This helps route issues to the right team members by adding the appropriate label
-        or:
-            - if:
-            # Identify if the issue title contains the word "arcbox" (not case insensitive) and add the "ArcBox" label
-                - titleContains:
-                        pattern: "(?i)arcbox"
-                        isRegex: true
-              then:
-                    - addLabel:
-                        label: ArcBox
-            - if:
-                # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
-                - titleContains:
-                        pattern: "(?i)hcibox"
-                        isRegex: true
-              then:
-                    - addLabel:
-                        label: HCIBox
-            - if:
-                # Identify if the issue title contains the word "agora" (not case insensitive) and add the "Agora" label
-                - titleContains:
-                        pattern: "(?i)agora"
-                        isRegex: true
-              then:
-                    - addLabel:
-                        label: Agora
+
+      - description: When an issue is opened, identify if the issue title contains the word "bug" or "feature" and post a message to the author. Add the "Needs-Triage" label.
+        if:
+          - payloadType: Issues
+          - isOpen
+          - isAction:
+              action: Opened
+          - titleContains:
+                pattern: "(?i)arcbox"
+                isRegex: true
+        then:
+            - addLabel:
+                label: ArcBox
+            # - if:
+            #     # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
+            #     - titleContains:
+            #             pattern: "(?i)hcibox"
+            #             isRegex: true
+            #   then:
+            #         - addLabel:
+            #             label: HCIBox
+            # - if:
+            #     # Identify if the issue title contains the word "agora" (not case insensitive) and add the "Agora" label
+            #     - titleContains:
+            #             pattern: "(?i)agora"
+            #             isRegex: true
+            #   then:
+            #         - addLabel:
+            #             label: Agora
           
             - if: 
               # Identify if the issue title contains the word "bug" (not case insensitive) and add the "Bug-Issue" label
