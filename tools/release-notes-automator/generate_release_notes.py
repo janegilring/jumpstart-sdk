@@ -5,7 +5,7 @@ import os
 # List of GitHub repositories to pull release notes from.
 # Format: "owner/repo"
 REPOS = [
-    "Azure/jumpstart-sdk"
+    "microsoft/azure_arc"
 ]
 
 # Static filter values for GitHub API queries
