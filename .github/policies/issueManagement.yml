@@ -272,9 +272,10 @@ configuration:
           - payloadType: Issues
           - and:
              - not:
-                - isAssignedToSomeone
-                - hasLabel:
+                hasLabel:
                     label: Abandoned
+          - isAssignedToSomeone
+
         #   - and:
         #      - not:
         #         hasLabel:
