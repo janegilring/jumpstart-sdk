@@ -65,14 +65,14 @@ configuration:
               then:
                     - addLabel:
                         label: ArcBox
-        #     - if:
-        #         # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
-        #         - titleContains:
-        #                 pattern: "(?i)hcibox"
-        #                 isRegex: true
-        #         - then:
-        #             - addLabel:
-        #                 label: HCIBox
+            - if:
+                # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
+                - titleContains:
+                        pattern: "(?i)hcibox"
+                        isRegex: true
+              then:
+                    - addLabel:
+                        label: HCIBox
         #     - if:
         #         # Identify if the issue title contains the word "agora" (not case insensitive) and add the "Agora" label
         #         - titleContains:
