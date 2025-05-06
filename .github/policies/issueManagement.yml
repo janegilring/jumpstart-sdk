@@ -39,7 +39,7 @@ configuration:
               - not:
                   hasLabel:
                       label: Feature-Request
-            then:
+        then:
                 - addReply:
                     reply: |
                         👋 Hello ${issueAuthor},
