@@ -519,7 +519,7 @@ configuration:
       filters:
       - isIssue
       - isOpen
-      - isAssignedToSomeone
+      - isNotAssigned
       - isNotLabeledWith:
             label: Assigned
       actions:
