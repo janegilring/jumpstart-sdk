@@ -55,6 +55,66 @@ configuration:
           - addLabel:
               label: Feature-Request
 
+      - description: If issue title contains "arcbox", add the "ArcBox" label.
+        if:
+          - payloadType: Issues
+          - isAction:
+              action: Opened
+          - titleContains:
+              pattern: "(?i)arcbox"
+              isRegex: true
+          - not:
+              hasLabel:
+                  label: ArcBox
+        then:
+          - addLabel:
+              label: ArcBox
+
+      - description: If issue title contains "localbox", add the "LocalBox" label.
+        if:
+          - payloadType: Issues
+          - isAction:
+              action: Opened
+          - titleContains:
+              pattern: "(?i)localbox"
+              isRegex: true
+          - not:
+              hasLabel:
+                  label: LocalBox
+        then:
+          - addLabel:
+              label: LocalBox
+
+      - description: If issue title contains "hcibox", add the "LocalBox" label.
+        if:
+          - payloadType: Issues
+          - isAction:
+              action: Opened
+          - titleContains:
+              pattern: "(?i)hcibox"
+              isRegex: true
+          - not:
+              hasLabel:
+                  label: HCIBox
+        then:
+          - addLabel:
+              label: LocalBox
+
+      - description: If issue title contains "agora", add the "Agora" label.
+        if:
+          - payloadType: Issues
+          - isAction:
+              action: Opened
+          - titleContains:
+              pattern: "(?i)agora"
+              isRegex: true
+          - not:
+              hasLabel:
+                  label: Agora
+        then:
+          - addLabel:
+              label: Agora
+
       - description: Close issues opened without Bug-Issue or Feature-Request labels.
         if:
           - payloadType: Issues
@@ -131,16 +191,16 @@ configuration:
     #         - closeIssue
 
     #   - description: When an issue is opened, identify if the issue title contains the word "bug" or "feature" and post a message to the author. Add the "Needs-Triage" label.
-    #     if:
-    #       - payloadType: Issues
-    #       - isAction:
-    #           action: Opened
-    #       - titleContains:
-    #             pattern: "(?i)arcbox"
-    #             isRegex: true
-    #     then:
-    #         - addLabel:
-    #             label: ArcBox
+        # if:
+        #   - payloadType: Issues
+        #   - isAction:
+        #       action: Opened
+        #   - titleContains:
+        #         pattern: "(?i)arcbox"
+        #         isRegex: true
+        # then:
+        #     - addLabel:
+        #         label: ArcBox
     #         # - if:
     #         #     # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
     #         #     - titleContains:
