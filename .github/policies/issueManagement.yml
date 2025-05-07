@@ -472,7 +472,7 @@ configuration:
       filters:
       - isIssue
     #   - isAssignedToSomeone
-      - isNotInAnyMilestone # Ensure the issue does not have a milestone
+    #   - isNotInAnyMilestone # Ensure the issue does not have a milestone
       - not:
           hasLabel:
               label: Missing-Milestone
