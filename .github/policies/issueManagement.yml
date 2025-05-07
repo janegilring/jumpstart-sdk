@@ -460,7 +460,8 @@ configuration:
         if:
         - payloadType: Issues
         - isAssignedToSomeone
-        - isPartOfAnyMilestone
+        - isInMilestone:
+            milestone: ${milestone}
         - hasLabel:
             label: Missing-Milestone
         then:
