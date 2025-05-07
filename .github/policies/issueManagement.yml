@@ -471,7 +471,8 @@ configuration:
           hour: 6
       filters:
       - isIssue
-      - isNotAssigned
+      - isAssignedTo:
+            user: ${userName} # Ensure the issue is assigned to someone
       - isNotInAnyMilestone # Ensure the issue does not have a milestone
       - isNotLabeledWith:
             label: Missing-Milestone
