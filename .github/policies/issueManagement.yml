@@ -352,31 +352,31 @@ configuration:
           - addLabel:
               label: Needs-Attention
 
-      - description: Add "Assigned" label to open issues with assignees, if not already present.
-        # This rule ensures open issues with assignees are clearly marked with the "Assigned" label.
-        if:
-          - payloadType: Issues
-          - isOpen
-          - isAssignedToSomeone
-          - not:
-              hasLabel:
-                label: Assigned
-        then:
-          - addLabel:
-              label: Assigned
+    #   - description: Add "Assigned" label to open issues with assignees, if not already present.
+    #     # This rule ensures open issues with assignees are clearly marked with the "Assigned" label.
+    #     if:
+    #       - payloadType: Issues
+    #       - isOpen
+    #       - isAssignedToSomeone
+    #       - not:
+    #           hasLabel:
+    #             label: Assigned
+    #     then:
+    #       - addLabel:
+    #           label: Assigned
 
-      - description: Remove "Assigned" label from open issues without assignees, if present.
-        # This rule ensures the "Assigned" label is removed when an open issue no longer has any assignees.
-        if:
-          - payloadType: Issues
-          - isOpen
-          - not:
-              isAssignedToSomeone
-          - hasLabel:
-              label: Assigned
-        then:
-          - removeLabel:
-              label: Assigned
+    #   - description: Remove "Assigned" label from open issues without assignees, if present.
+    #     # This rule ensures the "Assigned" label is removed when an open issue no longer has any assignees.
+    #     if:
+    #       - payloadType: Issues
+    #       - isOpen
+    #       - not:
+    #           isAssignedToSomeone
+    #       - hasLabel:
+    #           label: Assigned
+    #     then:
+    #       - removeLabel:
+    #           label: Assigned
 
       # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
@@ -489,22 +489,21 @@ configuration:
       - removeLabel:
           label: Missing-Milestone
 
-    - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
-      # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
-      # It runs daily at 6:00.
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isNotInAnyMilestone # Ensure the issue does not have a milestone
-      - hasLabel: # Ensure the issue is assigned
-          label: Assigned
-      - isNotLabeledWith:
-            label: Missing-Milestone
-      actions:
-      - addLabel:
-          label: Missing-Milestone
+    # - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
+    #   # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
+    #   # It runs daily at 6:00.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   - isIssue
+    #   - isNotInAnyMilestone # Ensure the issue does not have a milestone
+
+    #   - isNotLabeledWith:
+    #         label: Missing-Milestone
+    #   actions:
+    #   - addLabel:
+    #       label: Missing-Milestone
 
     # ---------------------------------------------------------------------------
     # ISSUE ASSIGNMENT LABEL SYNC (Scheduled)
@@ -526,21 +525,21 @@ configuration:
     #   - addLabel:
     #         label: Assigned
 
-    - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
-      # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
-      # It runs daily at 6:00.
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - isNotAssigned
-      - hasLabel:
-          label: Assigned
-      actions:
-      - removeLabel:
-          label: Assigned
+    # - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
+    #   # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
+    #   # It runs daily at 6:00.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   - isIssue
+    #   - isOpen
+    #   - isNotAssigned
+    #   - hasLabel:
+    #       label: Assigned
+    #   actions:
+    #   - removeLabel:
+    #       label: Assigned
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
