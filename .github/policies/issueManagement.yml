@@ -426,7 +426,8 @@ configuration:
         - payloadType: Issues
         - hasLabel: # Check if the label to be removed is present
             label: Missing-Milestone
-        - isPartOfAnyMilestone # Check if a milestone actually exists
+        - isNotPartOfMilestone:
+            milestone: INVALID # Check if a milestone actually exists
         then:
         - removeLabel:
             label: Missing-Milestone
