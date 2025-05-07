@@ -458,7 +458,7 @@ configuration:
       - hasLabel: # Ensure the label is present
           label: Missing-Milestone
       - isNotPartOfMilestone: # Ensure the issue actually has a milestone
-                milestone: INVALID
+                milestone: INVALID # Intentionally invalid to ensure the rule is triggered
       actions:
       - removeLabel:
           label: Missing-Milestone
@@ -472,8 +472,8 @@ configuration:
       filters:
       - isIssue
       - isAssignedToSomeone
-      - not:
-          isPartOfAnyMilestone
+      - isNotPartOfMilestone: # Ensure the issue actually has a milestone
+                milestone: INVALID # Intentionally invalid to ensure the rule is triggered
       - not:
           hasLabel:
               label: Missing-Milestone
