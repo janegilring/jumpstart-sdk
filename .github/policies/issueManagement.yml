@@ -167,150 +167,8 @@ configuration:
                     Thank you for reporting this issue a team member will review and triage it soon. All issues and pull requests are evaluated by the Arc Jumpstart team to determine next steps.
 
                     By submitting this issue request, you agree that your contributions will be licensed under the project's [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
-    #   - description: When an issue is opened, identify if the issue title contains the word "bug" or "feature" and post a message to the author. Add the "Needs-Triage" label.
-    #     if:
-    #       - payloadType: Issues
-    #       - isAction:
-    #           action: Opened
-    #       - and:
-    #           # Check if the issue does not have the "Bug-Issue" label
-    #           - not:
-    #               hasLabel:
-    #                   label: Bug-Issue
-    #           # Check if the issue does not have the "Feature-Request" label
-    #           - not:
-    #               hasLabel:
-    #                   label: Feature-Request
-    #     then:
-    #         - addReply:
-    #             reply: |
-    #                 👋 Hello ${issueAuthor},
 
-    #                 This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
-
-    #                 This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
-
-    #                 Thank you for your collaboration!
-                    
-    #         # Add abandoned label to track automatically closed non-form GitHub issues
-    #         - addLabel:
-    #             label: Abandoned                    
-    #         - closeIssue
-
-    #   - description: When an issue is opened, identify if the issue title contains the word "bug" or "feature" and post a message to the author. Add the "Needs-Triage" label.
-        # if:
-        #   - payloadType: Issues
-        #   - isAction:
-        #       action: Opened
-        #   - titleContains:
-        #         pattern: "(?i)arcbox"
-        #         isRegex: true
-        # then:
-        #     - addLabel:
-        #         label: ArcBox
-    #         # - if:
-    #         #     # Identify if the issue title contains the word "hcibox" (not case insensitive) and add the "HCIBox" label
-    #         #     - titleContains:
-    #         #             pattern: "(?i)hcibox"
-    #         #             isRegex: true
-    #         #   then:
-    #         #         - addLabel:
-    #         #             label: HCIBox
-    #         # - if:
-    #         #     # Identify if the issue title contains the word "agora" (not case insensitive) and add the "Agora" label
-    #         #     - titleContains:
-    #         #             pattern: "(?i)agora"
-    #         #             isRegex: true
-    #         #   then:
-    #         #         - addLabel:
-    #         #             label: Agora
-    #   - description: When an issue is opened, identify if the issue title contains the word "bug" or "feature" and post a message to the author. Add the "Needs-Triage" label.          
-    #     if: 
-    #       - payloadType: Issues
-    #       - isOpen
-    #       - isAction:
-    #           action: Opened
-    #       - titleContains:
-    #             pattern: "(?i)bug"
-    #             isRegex: true
-    #     then:
-    #     # Add the "Bug-Issue" label to issues with the word "bug" in the title
-    #         - addLabel:
-    #             label: Bug-Issue
-
-    #   - description: When an issue is opened, identify if the issue title contains the word "bug" or "feature" and post a message to the author. Add the "Needs-Triage" label.          
-    #     if: 
-    #       - payloadType: Issues
-    #       - isAction:
-    #           action: Opened
-    #       - titleContains:
-    #             pattern: "(?i)bug"
-    #             isRegex: true
-    #     then:
-    #     # Add the "Bug-Issue" label to issues with the word "bug" in the title
-    #         - addLabel:
-    #             label: Bug-Issue
-    #         - addLabel:
-    #             label: Test-Label
-    #     # Add a reply to the issue author with helpful guidance
-    #         - addReply:
-    #             reply: |
-    #                 👋 Hello ${issueAuthor},
-
-    #                 Thank you for reporting this issue a team member will review and triage it soon. All issues and pull requests are evaluated by the Arc Jumpstart team to determine next steps.
-
-    #                 By submitting this issue request, you agree that your contributions will be licensed under the project's [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).          
-            # - if:
-            #   # Identify if the issue title contains the word "feature" (not case insensitive) and add the "Feature-Request" label
-            #     - titleContains:
-            #         pattern: "(?i)feature"
-            #         isRegex: true
-            #   then:
-            #     # Add the "Feature-Request" label to issues with the word "feature" in the title
-            #         - addLabel:
-            #             label: Feature-Request
-            #         - addLabel: 
-            #             label: Needs-Triage
-            #     # Add a reply to the feature request author with expectations    
-            #         - addReply:
-            #             reply: |
-            #                 👋 Hello ${issueAuthor},
-
-            #                 Thank you for your feature request, a team member will review it soon. All issues and pull requests are validated by the Arc Jumpstart team and must pass all validation checks before being merged.
-            #                 By submitting this pull request, you agree that your contributions will be licensed under the [MIT license](https://github.com/microsoft/azure_arc/blob/main/LICENSE-CODE) license and you confirm that you've read and will abide by our [Code of Conduct](https://github.com/microsoft/azure_arc/blob/main/CODE_OF_CONDUCT.md).
-
-    #   - description: Auto-close issues without Bug-Issue or Feature-Request labels
-    #     # This policy ensures that any issue opened without the required labels is automatically closed.
-    #     # It acts as a fail-safe mechanism to enforce the use of GitHub Issue Forms for proper categorization.
-    #     if:
-    #       - payloadType: Issues
-    #       - isAction:
-    #           action: Opened
-    #       - and:
-    #           # Check if the issue does not have the "Bug-Issue" label
-    #           - not:
-    #               hasLabel:
-    #                   label: Bug-Issue
-    #           # Check if the issue does not have the "Feature-Request" label
-    #           - not:
-    #               hasLabel:
-    #                   label: Feature-Request
-    #     then:
-    #     - addReply:
-    #         reply: |
-    #             👋 Hello ${issueAuthor},
-
-    #             This issue does not meet our repository's requirements for proper labeling. All issues must be submitted using our GitHub Issue Forms to ensure they are categorized correctly.
-
-    #             This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
-
-    #             Thank you for your collaboration!
-                
-    #     - closeIssue
-    #     # Add abandoned label to track automatically closed non-form GitHub issues
-    #     - addLabel:
-    #         label: Abandoned
-
+                    Thank you for your collaboration!
 
 
 
@@ -448,20 +306,19 @@ configuration:
           - removeLabel:
               label: Needs-Triage
 
-      - description: Add the "Needs-Triage" label when issue has no assignees.
-        # This rule ensures that all open issues that are not assigned to someone are marked for triage by adding the "Needs-Triage" label
+      - description: Add "Needs-Triage" to open, unassigned, non-abandoned issues that don't already have it.
+        # This rule ensures that all open issues that are not assigned to someone, not abandoned, and not already triaged are marked for triage.
         if:
           - payloadType: Issues
-          - and:
-             - not:
-                hasLabel:
-                    label: Abandoned
-          - isAssignedToSomeone
-
-        #   - and:
-        #      - not:
-        #         hasLabel:
-        #             label: Needs-Triage
+          - isOpen
+          - not:
+              isAssignedToSomeone # Corrected: was isAssignedToSomeone
+          - not:
+              hasLabel:
+                  label: Abandoned
+          - not:
+              hasLabel: # Added: to prevent redundant adds
+                  label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
