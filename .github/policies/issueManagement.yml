@@ -457,8 +457,7 @@ configuration:
       - isIssue
       - hasLabel: # Ensure the label is present
           label: Missing-Milestone
-      not:
-        - isNotPartOfMilestone: # Ensure the issue actually has a milestone
+      - isNotPartOfMilestone: # Ensure the issue actually has a milestone
                 milestone: INVALID
       actions:
       - removeLabel:
