@@ -458,9 +458,25 @@ configuration:
       - hasLabel: # Ensure the label is present
           label: Missing-Milestone
       - isNotPartOfMilestone: # Ensure the issue actually has a milestone
-                milestone: INVALID
+                milestone: INVALID # Intentionally invalid to ensure the rule is triggered
       actions:
       - removeLabel:
+          label: Missing-Milestone
+
+    - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
+      # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
+      # It runs daily at 6:00.
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isNotAssigned
+      - isNotInAnyMilestone # Ensure the issue does not have a milestone
+      - isNotLabeledWith:
+            label: Missing-Milestone
+      actions:
+      - addLabel:
           label: Missing-Milestone
 
     # ---------------------------------------------------------------------------
