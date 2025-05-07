@@ -170,9 +170,6 @@ configuration:
 
                     Thank you for your collaboration!
 
-
-
-
       # ---------------------------------------------------------------------------
       # ISSUE LIFECYCLE MANAGEMENT
       # Handles issue closing, reopening, and duplicate detection
@@ -475,10 +472,10 @@ configuration:
     # ---------------------------------------------------------------------------
     - description: Periodically remove "Missing-Milestone" label from issues that have it but also have a milestone.
       # This scheduled task acts as a cleanup for cases where the event-driven removal might not have triggered.
-      # It runs every hour.
+      # It runs daily at 6:00.
       frequencies:
       - hourly:
-          hour: 1 
+          hour: 6
       filters:
       - isIssue
       - hasLabel: # Ensure the label is present
@@ -491,51 +488,67 @@ configuration:
 
     - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
       # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
-      # It runs every hour.
+      # It runs daily at 6:00.
       frequencies:
       - hourly:
-          hour: 1
+          hour: 6
       filters:
       - isIssue
       - isNotInAnyMilestone # Ensure the issue does not have a milestone
-      - hasLabel: # Ensure the issue is assigned via the "Needs-Attention" label
-          label: Needs-Attention
-      - hasLabel: # Ensure the issue is assigned via the "Bug-Issue" label
-          label: Bug-Issue        
+      - hasLabel: # Ensure the issue is assigned
+          label: Assigned
       - isNotLabeledWith:
             label: Missing-Milestone
       actions:
       - addLabel:
           label: Missing-Milestone
 
-    - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
-      # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
-      # It runs every hour.
-      frequencies:
-      - hourly:
-          hour: 1
-      filters:
-      - isIssue
-      - isNotInAnyMilestone # Ensure the issue does not have a milestone
-      - hasLabel: # Ensure the issue is assigned via the "Needs-Attention" label
-          label: Needs-Attention
-      - hasLabel: # Ensure the issue is assigned via the "Feature-Request" label
-          label: Feature-Request           
-      - isNotLabeledWith:
-            label: Missing-Milestone
-      actions:
-      - addLabel:
-          label: Missing-Milestone
+    # # ---------------------------------------------------------------------------
+    # # ISSUE ASSIGNMENT LABEL SYNC (Scheduled)
+    # # Periodically ensures the "Assigned" label is correctly applied or removed based on assignee status.
+    # # ---------------------------------------------------------------------------
+    # - description: Periodically add "Assigned" label to open issues that are assigned but missing the label.
+    #   # This scheduled task ensures consistency for the "Assigned" label on assigned issues.
+    #   # It runs daily at 6:00.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   - isIssue
+    #   - isOpen
+    #   - isNotAssigned
+    #   - isNotLabeledWith:
+    #         label: Assigned
+    #   actions:
+    #   - addLabel:
+    #         label: Assigned
+
+    # - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
+    #   # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
+    #   # It runs daily at 6:00.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   - isIssue
+    #   - isOpen
+    #   - not:
+    #       isAssignedToSomeone
+    #   - hasLabel:
+    #       label: Assigned
+    #   actions:
+    #   - removeLabel:
+    #       label: Assigned
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
     # Automatically closes issues that need feedback but have no activity
     # ---------------------------------------------------------------------------
     - description: Close stale issues. Issues that have not had any activity for 7 days and are labeled with the "Needs-Author-Feedback" label and the "No-Recent-Activity" label will be closed.
-      # This runs every hour and closes issues after the warning period has elapsed
+      # This runs daily at 6:00 and closes issues after the warning period has elapsed
       frequencies:
       - hourly:
-          hour: 1
+          hour: 6
       filters:
       # Only target issues that are open and need author feedback
       # Exclude issues that are labeled with the "Feature-Request" label or the "Upstream-Bug-Issue" label    
@@ -561,12 +574,12 @@ configuration:
           label: Needs-Triage
 
     - description: Add the "No-Recent-Activity" label to issues that have not had any activity for 7 days
-      # This runs every hour and adds the "No-Recent-Activity" label to issues that have not had any activity for 7 days
+      # This runs daily at 6:00 and adds the "No-Recent-Activity" label to issues that have not had any activity for 7 days
       # First warning stage before closing stale issues by adding the "No-Recent-Activity" label
       # Timeline: Day 7 - Add warning label, Day 14 - Close issue if no response
       frequencies:
       - hourly:
-          hour: 1
+          hour: 6
       filters:
         # Only target issues that are open and need author feedback
       - isIssue
@@ -591,11 +604,11 @@ configuration:
                 Thank you for your collaboration!
 
     - description: Close issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
-      # This runs every hour and closes issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
+      # This runs daily at 6:00 and closes issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
       # Auto-close resolved issues after waiting period for any objections by adding the "Issue-Addressed" label
       frequencies:
       - hourly:
-          hour: 1
+          hour: 6
       filters:
         # Only target issues that are open and have been addressed
       - isIssue
