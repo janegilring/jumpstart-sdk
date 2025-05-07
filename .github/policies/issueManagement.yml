@@ -475,10 +475,10 @@ configuration:
     # ---------------------------------------------------------------------------
     - description: Periodically remove "Missing-Milestone" label from issues that have it but also have a milestone.
       # This scheduled task acts as a cleanup for cases where the event-driven removal might not have triggered.
-      # It runs daily at 6:00.
+      # It runs every hour
       frequencies:
       - hourly:
-          hour: 6
+          hour: 1 
       filters:
       - isIssue
       - hasLabel: # Ensure the label is present
