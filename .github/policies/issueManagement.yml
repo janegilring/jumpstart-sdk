@@ -455,21 +455,6 @@ configuration:
         - addLabel:
             label: Missing-Milestone
 
-    #   - description: Remove the "Missing-Milestone" label from issues that are assigned and have a milestone.
-    #     # This rule ensures that if an issue is assigned and has a milestone, the "Missing-Milestone" label is removed.
-    #     if:
-    #     - payloadType: Issues
-    #     - isAssignedToSomeone
-    #     - and:
-    #         - hasLabel:
-    #             label: Missing-Milestone
-    #         - not:
-    #             isInMilestone:
-    #                 milestone: INVALID # Intentionally invalid to ensure the rule is triggered 
-    #     then:
-    #     - removeLabel:
-    #         label: Missing-Milestone
-
     # ===========================================================================
     # SCHEDULED SEARCHES
     # Periodic tasks that run on defined schedules to maintain repository hygiene
@@ -495,22 +480,21 @@ configuration:
       - removeLabel:
           label: Missing-Milestone
 
-    # - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
-    #   # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
-    #   # It runs daily at 6:00.
-    #   frequencies:
-    #   - hourly:
-    #       hour: 6
-    #   filters:
-    #   - isIssue
-    #   - isNotInAnyMilestone # Ensure the issue does not have a milestone
-    #   - hasLabel: # Ensure the issue is assigned
-    #       label: Assigned
-    #   - isNotLabeledWith:
-    #         label: Missing-Milestone
-    #   actions:
-    #   - addLabel:
-    #       label: Missing-Milestone
+    - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
+      # This scheduled task runs every hour and ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
+      frequencies:
+      - hourly:
+          hour: 1
+      filters:
+      - isIssue
+      - isNotInAnyMilestone # Ensure the issue does not have a milestone
+      - hasLabel: # Ensure the label is not already present
+          label: Needs-Attention
+      - isNotLabeledWith:
+            label: Missing-Milestone
+      actions:
+      - addLabel:
+          label: Missing-Milestone
 
     # # ---------------------------------------------------------------------------
     # # ISSUE ASSIGNMENT LABEL SYNC (Scheduled)
@@ -521,7 +505,7 @@ configuration:
     #   # It runs daily at 6:00.
     #   frequencies:
     #   - hourly:
-    #       hour: 6
+    #       hour: 1
     #   filters:
     #   - isIssue
     #   - isOpen
@@ -537,7 +521,7 @@ configuration:
     #   # It runs daily at 6:00.
     #   frequencies:
     #   - hourly:
-    #       hour: 6
+    #       hour: 1
     #   filters:
     #   - isIssue
     #   - isOpen
@@ -554,10 +538,10 @@ configuration:
     # Automatically closes issues that need feedback but have no activity
     # ---------------------------------------------------------------------------
     - description: Close stale issues. Issues that have not had any activity for 7 days and are labeled with the "Needs-Author-Feedback" label and the "No-Recent-Activity" label will be closed.
-      # This runs daily at 6:00 and closes issues after the warning period has elapsed
+      # This runs every hour and closes issues after the warning period has elapsed
       frequencies:
       - hourly:
-          hour: 6
+          hour: 1
       filters:
       # Only target issues that are open and need author feedback
       # Exclude issues that are labeled with the "Feature-Request" label or the "Upstream-Bug-Issue" label    
@@ -583,12 +567,12 @@ configuration:
           label: Needs-Triage
 
     - description: Add the "No-Recent-Activity" label to issues that have not had any activity for 7 days
-      # This runs daily at 6:00 and adds the "No-Recent-Activity" label to issues that have not had any activity for 7 days
+      # This runs runs every hour and adds the "No-Recent-Activity" label to issues that have not had any activity for 7 days
       # First warning stage before closing stale issues by adding the "No-Recent-Activity" label
       # Timeline: Day 7 - Add warning label, Day 14 - Close issue if no response
       frequencies:
       - hourly:
-          hour: 6
+          hour: 1
       filters:
         # Only target issues that are open and need author feedback
       - isIssue
@@ -613,11 +597,11 @@ configuration:
                 Thank you for your collaboration!
 
     - description: Close issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
-      # This runs daily at 6:00 and closes issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
+      # This runs every hour and closes issues that have not had any activity for 7 days and are labeled with the "Issue-Addressed" label
       # Auto-close resolved issues after waiting period for any objections by adding the "Issue-Addressed" label
       frequencies:
       - hourly:
-          hour: 6
+          hour: 1
       filters:
         # Only target issues that are open and have been addressed
       - isIssue
