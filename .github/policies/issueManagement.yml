@@ -455,14 +455,14 @@ configuration:
         - addLabel:
             label: Missing-Milestone
 
-      - description: Remove "Missing-Milestone" label if an issue has this label and is part of any milestone.
-        # This rule attempts to remove the label if an issue is found to have both the label and a milestone.
-        # Relies on the policy engine re-evaluating rules on general issue updates, as specific 'Milestoned' action might not be supported.
+      - description: Remove the "Missing-Milestone" label from issues that are assigned and have a milestone.
+        # This rule ensures that if an issue is assigned and has a milestone, the "Missing-Milestone" label is removed.
         if:
         - payloadType: Issues
+        - isAssignedToSomeone
+        - isPartOfAnyMilestone
         - hasLabel:
             label: Missing-Milestone
-        - isPartOfAnyMilestone
         then:
         - removeLabel:
             label: Missing-Milestone
