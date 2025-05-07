@@ -501,7 +501,24 @@ configuration:
       - hasLabel: # Ensure the issue is assigned via the "Needs-Attention" label
           label: Needs-Attention
       - hasLabel: # Ensure the issue is assigned via the "Bug-Issue" label
-          label: Bug-Issue
+          label: Bug-Issue        
+      - isNotLabeledWith:
+            label: Missing-Milestone
+      actions:
+      - addLabel:
+          label: Missing-Milestone
+
+    - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
+      # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
+      # It runs every hour.
+      frequencies:
+      - hourly:
+          hour: 1
+      filters:
+      - isIssue
+      - isNotInAnyMilestone # Ensure the issue does not have a milestone
+      - hasLabel: # Ensure the issue is assigned via the "Needs-Attention" label
+          label: Needs-Attention
       - hasLabel: # Ensure the issue is assigned via the "Feature-Request" label
           label: Feature-Request           
       - isNotLabeledWith:
