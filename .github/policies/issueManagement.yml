@@ -471,7 +471,7 @@ configuration:
           hour: 6
       filters:
       - isIssue
-    #   - isAssignedToSomeone
+      - isAssignedToSomeone
       - isNotInAnyMilestone # Ensure the issue does not have a milestone
       - isNotLabeledWith:
             label: Missing-Milestone
