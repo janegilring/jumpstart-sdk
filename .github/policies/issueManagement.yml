@@ -510,8 +510,24 @@ configuration:
     # ISSUE ASSIGNMENT LABEL SYNC (Scheduled)
     # Periodically ensures the "Assigned" label is correctly applied or removed based on assignee status.
     # ---------------------------------------------------------------------------
-    - description: Periodically add "Assigned" label to open issues that are assigned but missing the label.
-      # This scheduled task ensures consistency for the "Assigned" label on assigned issues.
+    # - description: Periodically add "Assigned" label to open issues that are assigned but missing the label.
+    #   # This scheduled task ensures consistency for the "Assigned" label on assigned issues.
+    #   # It runs daily at 6:00.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   - isIssue
+    #   - isOpen
+    #   - isNotAssigned
+    #   - isNotLabeledWith:
+    #         label: Assigned
+    #   actions:
+    #   - addLabel:
+    #         label: Assigned
+
+    - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
+      # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
       # It runs daily at 6:00.
       frequencies:
       - hourly:
@@ -520,28 +536,11 @@ configuration:
       - isIssue
       - isOpen
       - isNotAssigned
-      - isNotLabeledWith:
-            label: Assigned
+      - hasLabel:
+          label: Assigned
       actions:
-      - addLabel:
-            label: Assigned
-
-    # - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
-    #   # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
-    #   # It runs daily at 6:00.
-    #   frequencies:
-    #   - hourly:
-    #       hour: 6
-    #   filters:
-    #   - isIssue
-    #   - isOpen
-    #   - not:
-    #       isAssignedToSomeone
-    #   - hasLabel:
-    #       label: Assigned
-    #   actions:
-    #   - removeLabel:
-    #       label: Assigned
+      - removeLabel:
+          label: Assigned
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
