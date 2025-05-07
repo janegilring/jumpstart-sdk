@@ -25,6 +25,36 @@ configuration:
       # Handles initial triage and labeling of new issues
       # Automatically categorizes issues to improve visibility and tracking
       # ---------------------------------------------------------------------------
+      - description: If issue title contains "bug", add the "Bug-Issue" label.
+        if:
+          - payloadType: Issues
+          - isAction:
+              action: Opened
+          - titleContains:
+              pattern: "(?i)bug"
+              isRegex: true
+          - not:
+              hasLabel:
+                  label: Bug-Issue
+        then:
+          - addLabel:
+              label: Bug-Issue
+
+      - description: If issue title contains "feature", add the "Feature-Request" label.
+        if:
+          - payloadType: Issues
+          - isAction:
+              action: Opened
+          - titleContains:
+              pattern: "(?i)feature"
+              isRegex: true
+          - not:
+              hasLabel:
+                  label: Feature-Request
+        then:
+          - addLabel:
+              label: Feature-Request
+
       - description: Close issues opened without Bug-Issue or Feature-Request labels.
         if:
           - payloadType: Issues
