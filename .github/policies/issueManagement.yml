@@ -488,50 +488,13 @@ configuration:
       filters:
       - isIssue
       - isNotInAnyMilestone # Ensure the issue does not have a milestone
-      - hasLabel: # Ensure the label is not already present
+      - hasLabel: # Ensure the issue is assigned via the "Needs-Attention" label
           label: Needs-Attention
       - isNotLabeledWith:
             label: Missing-Milestone
       actions:
       - addLabel:
           label: Missing-Milestone
-
-    # # ---------------------------------------------------------------------------
-    # # ISSUE ASSIGNMENT LABEL SYNC (Scheduled)
-    # # Periodically ensures the "Assigned" label is correctly applied or removed based on assignee status.
-    # # ---------------------------------------------------------------------------
-    # - description: Periodically add "Assigned" label to open issues that are assigned but missing the label.
-    #   # This scheduled task ensures consistency for the "Assigned" label on assigned issues.
-    #   # It runs daily at 6:00.
-    #   frequencies:
-    #   - hourly:
-    #       hour: 1
-    #   filters:
-    #   - isIssue
-    #   - isOpen
-    #   - isNotAssigned
-    #   - isNotLabeledWith:
-    #         label: Assigned
-    #   actions:
-    #   - addLabel:
-    #         label: Assigned
-
-    # - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
-    #   # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
-    #   # It runs daily at 6:00.
-    #   frequencies:
-    #   - hourly:
-    #       hour: 1
-    #   filters:
-    #   - isIssue
-    #   - isOpen
-    #   - not:
-    #       isAssignedToSomeone
-    #   - hasLabel:
-    #       label: Assigned
-    #   actions:
-    #   - removeLabel:
-    #       label: Assigned
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
