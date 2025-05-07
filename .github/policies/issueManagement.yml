@@ -463,6 +463,24 @@ configuration:
       - removeLabel:
           label: Missing-Milestone
 
+    - description: Periodically add "Missing-Milestone" label to open, assigned issues that lack a milestone and the label itself.
+      # This scheduled task ensures that open, assigned issues without milestones are correctly labeled if event-driven rules did not catch it (e.g., after a milestone removal).
+      # It runs daily at 6:00.
+      frequencies:
+      - hourly:
+          hour: 6
+      filters:
+      - isIssue
+      - isAssignedToSomeone
+      - not:
+          isPartOfAnyMilestone
+      - not:
+          hasLabel:
+              label: Missing-Milestone
+      actions:
+      - addLabel:
+          label: Missing-Milestone
+
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
     # Automatically closes issues that need feedback but have no activity
