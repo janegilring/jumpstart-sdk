@@ -526,22 +526,22 @@ configuration:
       - addLabel:
             label: Assigned
 
-    - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
-      # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
-      # It runs daily at 6:00.
-      frequencies:
-      - hourly:
-          hour: 6
-      filters:
-      - isIssue
-      - isOpen
-      - not:
-          isNotAssigned
-      - hasLabel:
-          label: Assigned
-      actions:
-      - removeLabel:
-          label: Assigned
+    # - description: Periodically remove "Assigned" label from open issues that are not assigned but have the label.
+    #   # This scheduled task ensures consistency by removing the "Assigned" label from unassigned open issues.
+    #   # It runs daily at 6:00.
+    #   frequencies:
+    #   - hourly:
+    #       hour: 6
+    #   filters:
+    #   - isIssue
+    #   - isOpen
+    #   - not:
+    #       isAssignedToSomeone
+    #   - hasLabel:
+    #       label: Assigned
+    #   actions:
+    #   - removeLabel:
+    #       label: Assigned
 
     # ---------------------------------------------------------------------------
     # STALE ISSUE MANAGEMENT
