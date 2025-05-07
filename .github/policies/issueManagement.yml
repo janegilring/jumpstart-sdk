@@ -233,8 +233,8 @@ configuration:
 
         - reopenIssue
 
-      - description: Add the "Needs-Triage" label to reopened issues that are not assigned.
-        # Ensures reopened issues get proper attention from maintainers by adding the "Needs-Triage" label
+      - description: Add the "Needs-Triage" label to reopened, non-abandoned issues that are not assigned
+        # Ensures reopened issues that are not abandoned and not assigned get proper attention from maintainers by adding the "Needs-Triage" label
         triggerOnOwnActions: false
         if:
         - payloadType: Issues
@@ -242,6 +242,9 @@ configuration:
             action: Reopened
         - not:
             isAssignedToSomeone
+        - not: # Ensure the issue is not abandoned
+            hasLabel:
+                label: Abandoned
         then:
         # Clear resolution labels when an issue is reopened
         - removeLabel:
@@ -303,19 +306,23 @@ configuration:
           - removeLabel:
               label: Needs-Triage
 
-      - description: Add "Needs-Triage" to open, unassigned, non-abandoned issues that don't already have it.
-        # This rule ensures that all open issues that are not assigned to someone, not abandoned, and not already triaged are marked for triage.
+      - description: Add "Needs-Triage" to existing open, unassigned, non-abandoned issues (e.g., after unassignment) that don't already have it
+        # This rule acts as a catch-all for ongoing state changes, ensuring open, unassigned, non-abandoned issues are triaged. It does not apply to newly opened issues, which are handled by a more specific rule.
         if:
-          - payloadType: Issues
-          - isOpen
-          - not:
-              isAssignedToSomeone # Corrected: was isAssignedToSomeone
-          - not:
-              hasLabel:
-                  label: Abandoned
-          - not:
-              hasLabel: # Added: to prevent redundant adds
-                  label: Needs-Triage
+          - and:
+            - payloadType: Issues
+            - not:
+                isAction: # Exclude newly opened issues
+                    action: Opened
+            - isOpen
+            - not:
+                isAssignedToSomeone
+            - not:
+                hasLabel:
+                    label: Abandoned
+            - not:
+                hasLabel: # To prevent redundant adds
+                    label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
