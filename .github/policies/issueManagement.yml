@@ -460,10 +460,11 @@ configuration:
         if:
         - payloadType: Issues
         - isAssignedToSomeone
-        - isInMilestone:
-            milestone: ${milestone}
         - hasLabel:
             label: Missing-Milestone
+        - not:
+            isInMilestone:
+                milestone: INVALID # Intentionally invalid to ensure the rule is triggered 
         then:
         - removeLabel:
             label: Missing-Milestone
