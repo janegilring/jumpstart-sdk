@@ -473,8 +473,8 @@ configuration:
       - isIssue
     #   - isAssignedToSomeone
     #   - isNotInAnyMilestone # Ensure the issue does not have a milestone
-      - hasNoLabel:
-          label: Missing-Milestone
+      - isNotLabeledWith:
+            label: Missing-Milestone
       actions:
       - addLabel:
           label: Missing-Milestone
