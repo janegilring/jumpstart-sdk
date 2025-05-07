@@ -349,6 +349,32 @@ configuration:
           - addLabel:
               label: Needs-Attention
 
+    #   - description: Add "Assigned" label to open issues with assignees, if not already present.
+    #     # This rule ensures open issues with assignees are clearly marked with the "Assigned" label.
+    #     if:
+    #       - payloadType: Issues
+    #       - isOpen
+    #       - isAssignedToSomeone
+    #       - not:
+    #           hasLabel:
+    #             label: Assigned
+    #     then:
+    #       - addLabel:
+    #           label: Assigned
+
+    #   - description: Remove "Assigned" label from open issues without assignees, if present.
+    #     # This rule ensures the "Assigned" label is removed when an open issue no longer has any assignees.
+    #     if:
+    #       - payloadType: Issues
+    #       - isOpen
+    #       - not:
+    #           isAssignedToSomeone
+    #       - hasLabel:
+    #           label: Assigned
+    #     then:
+    #       - removeLabel:
+    #           label: Assigned
+
       # ---------------------------------------------------------------------------
       # DUPLICATE ISSUE HANDLING
       # Manages issues identified as duplicates in comments
