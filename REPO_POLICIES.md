@@ -1,6 +1,6 @@
 # Arc Jumpstart SDK GitHub Repository Policies
 
-This document summarizes the automated policies for managing Pull Requests (PRs) and Issues in the Arc Jumpstart SDK repository. These policies help maintain a high-quality, collaborative, and efficient workflow for contributors and maintainers.
+This document outlines the automated policies for managing Pull Requests (PRs) and Issues in the Arc Jumpstart SDK repository. These policies are designed to ensure a high-quality, collaborative, and efficient workflow for contributors and maintainers.
 
 ---
 
@@ -11,7 +11,7 @@ This document summarizes the automated policies for managing Pull Requests (PRs)
 | **Empty PR Detection**        | PRs with no file changes are automatically closed.                                           | Prevents clutter from empty PRs.                          | PR is closed with a comment explaining why.             |
 | **Exempt Maintainers for Main Branch** | Certain maintainers can open PRs directly to the `main` branch.                                 | Allows trusted maintainers to bypass branch protection.    | Exempt maintainers receive a special message and label. |
 | **Main Branch Protection**    | PRs targeting `main` (except from exempt maintainers) are closed and redirected to `canary`. | Enforces workflow: all changes go through `canary` first. | PR is closed with a comment explaining the process.     |
-| **(Optional) Welcome Message**| (Currently commented out) New PRs would receive a welcome message with guidelines.           | Sets expectations and provides guidance.                  | -                                                       |
+| **Welcome Message**           | New PRs receive a welcome message with guidelines.                                           | Sets expectations and provides guidance.                  | Contributors are welcomed and provided with helpful links. |
 
 ---
 

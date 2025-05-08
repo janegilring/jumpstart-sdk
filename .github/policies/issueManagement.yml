@@ -141,7 +141,7 @@ configuration:
               reply: |
                   👋 Hello ${issueAuthor},
 
-                  This issue does not appear to have been submitted using our GitHub Issue Forms, or the required labels ('Bug-Issue' or 'Feature-Request') are missing. All issues must be submitted using our forms to ensure they are categorized correctly.
+                  This issue does not appear to have been submitted using our GitHub Issue Forms, or the required labels ("Bug-Issue" or "Feature-Request") are missing. All issues must be submitted using our forms to ensure they are categorized correctly.
 
                   This issue will now be closed. Please resubmit your issue or feature request [using the appropriate template](https://github.com/microsoft/azure_arc/issues/new/choose).
 
