@@ -8,7 +8,7 @@
 
 id: 
 name: GitOps.PullRequestIssueManagement
-description: Handlers for when an issue is first opened.
+description: Comprehensive automation for issue lifecycle management, including triage, assignment, labeling, and resolution.
 owner: Arc Jumpstart
 resource: repository
 disabled: false
