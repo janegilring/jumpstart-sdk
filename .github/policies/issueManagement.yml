@@ -309,16 +309,20 @@ configuration:
       - description: Add "Needs-Triage" to open, unassigned, non-abandoned issues.
         # Mark open, unassigned, and non-abandoned issues for triage.
         if:
-          - payloadType: Issues
-          - isOpen
-          - not:
-              isAssignedToSomeone
-          - not:
-              hasLabel:
-                  label: Abandoned
-          - not:
-              hasLabel:
-                  label: Needs-Triage
+          - and:
+            - payloadType: Issues
+            - not:
+                isAction: # Exclude newly opened issues
+                    action: Opened
+            - isOpen
+            - not:
+                isAssignedToSomeone
+            - not:
+                hasLabel:
+                    label: Abandoned
+            - not:
+                hasLabel: # To prevent redundant adds
+                    label: Needs-Triage
         then:
           - addLabel:
               label: Needs-Triage
