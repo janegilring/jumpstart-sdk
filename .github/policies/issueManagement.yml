@@ -309,7 +309,6 @@ configuration:
       - description: Add "Needs-Triage" to open, unassigned, non-abandoned issues.
         # Mark open, unassigned, and non-abandoned issues for triage.
         if:
-          - and:
             - payloadType: Issues
             - not:
                 isAction: # Exclude newly opened issues
@@ -324,18 +323,18 @@ configuration:
                 hasLabel: # To prevent redundant adds
                     label: Needs-Triage
 
-      - description: Remove "Needs-Attention" from open, unassigned issues.
-        # Ensure that unassigned issues no longer have the "Needs-Attention" label.
-        if:
-          - payloadType: Issues
-          - isOpen
-          - not:
-              isAssignedToSomeone
-          - hasLabel:
-              label: Needs-Attention
-        then:
-          - removeLabel:
-              label: Needs-Attention
+    #   - description: Remove "Needs-Attention" from open, unassigned issues.
+    #     # Ensure that unassigned issues no longer have the "Needs-Attention" label.
+    #     if:
+    #       - payloadType: Issues
+    #       - isOpen
+    #       - not:
+    #           isAssignedToSomeone
+    #       - hasLabel:
+    #           label: Needs-Attention
+    #     then:
+    #       - removeLabel:
+    #           label: Needs-Attention
 
       - description: Remove "Missing-Milestone" from open, unassigned issues.
         # Ensure that unassigned issues no longer have the "Missing-Milestone" label.
