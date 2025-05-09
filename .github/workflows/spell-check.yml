@@ -31,5 +31,5 @@ jobs:
         uses: streetsidesoftware/cspell-action@v6
         with:
           config: './cspell/cspell.json'  # Use the config in the cspell folder
-          inline: true  # Enables PR annotations
+          inline: 'error'  # Valid values are 'error', 'warning', or 'none'
           strict: true  # Fail the build on errors
