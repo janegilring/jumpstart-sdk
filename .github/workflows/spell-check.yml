@@ -6,14 +6,11 @@ on:
       - main
       - integration
     paths:
-      - '**/*.{md,txt,ps1,sh,py,js,ts,json,yml,yaml}'
-      - 'cspell.json'
-
+      - 'cspell/**'
   push:
     branches:
       - main
-      - develop
-      - feature/*
+      - integration
 
 jobs:
   spellcheck:
@@ -22,9 +19,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install cspell
+        run: npm install -g cspell
+
       - name: Run cspell with annotations
         uses: streetsidesoftware/cspell-action@v6
         with:
-          config: './cspell.json'
-          inline: true  # enables PR annotations
-          strict: true  # fail the build on errors
+          config: './cspell/cspell.json'  # Use the config in the cspell folder
+          inline: true  # Enables PR annotations
+          strict: true  # Fail the build on errors
