@@ -1,0 +1,30 @@
+name: Spell Check with PR Annotations
+
+on:
+  pull_request:
+    branches:
+      - main
+      - integration
+    paths:
+      - '**/*.{md,txt,ps1,sh,py,js,ts,json,yml,yaml}'
+      - 'cspell.json'
+
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*
+
+jobs:
+  spellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run cspell with annotations
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          config: './cspell.json'
+          inline: true  # enables PR annotations
+          strict: true  # fail the build on errors
