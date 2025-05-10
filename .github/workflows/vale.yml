@@ -12,9 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Vale
+        run: |
+          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.11.1/vale_Linux_64-bit.tar.gz | tar -xz -C /home/runner
+          sudo mv /home/runner/vale /usr/local/bin/vale
+
       - name: Install Microsoft Style for Vale
         run: |
-          mkdir -p .github/vale/styles
           vale install errata-ai/Microsoft
 
       - name: Run Vale
