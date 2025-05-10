@@ -1,34 +1,35 @@
+name: Spell Check
+
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   spellcheck:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List files in the repository (for debugging)
-        run: |
-          echo "Listing all files in the repository..."
-          find . -type f  # List all files to debug
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install cspell
+      - name: Install CSpell
         run: npm install -g cspell
 
-      - name: Run cspell with annotations
-        uses: streetsidesoftware/cspell-action@v6
-        with:
-          config: './cspell/cspell.json'
-          inline: 'error'
-          strict: true
+      - name: Debug file list
+        run: |
+          echo "Files in repo:"
+          find . -type f
+
+      - name: Run Spell Check
+        run: |
+          cspell "**/*" \
+            --config ./cspell/cspell.json \
+            --no-progress \
+            --show-context \
+            --color
