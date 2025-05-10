@@ -1,20 +1,10 @@
-name: Spell Check with PR Annotations
-
 on:
   pull_request:
     branches:
       - main
-      - integration
-    paths:
-      - '**/*.{md,txt,ps1,sh,py,js,ts,json,yml,yaml}'  # Check all relevant files
-      - 'cspell/**'  # Also check the cspell config files
   push:
     branches:
       - main
-      - integration
-    paths:
-      - '**/*.{md,txt,ps1,sh,py,js,ts,json,yml,yaml}'
-      - 'cspell/**'
 
 jobs:
   spellcheck:
@@ -22,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: List files in the repository (for debugging)
+        run: |
+          echo "Listing all files in the repository..."
+          find . -type f  # List all files to debug
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,6 +29,6 @@ jobs:
       - name: Run cspell with annotations
         uses: streetsidesoftware/cspell-action@v6
         with:
-          config: './cspell/cspell.json'  # Use the config in the cspell folder
-          inline: 'error'  # Valid values are 'error', 'warning', or 'none'
-          strict: true  # Fail the build on errors
+          config: './cspell/cspell.json'
+          inline: 'error'
+          strict: true
