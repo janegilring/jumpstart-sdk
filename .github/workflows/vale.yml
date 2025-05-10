@@ -12,19 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Vale
-        run: |
-          curl -fsSL https://github.com/errata-ai/vale/releases/latest/download/vale_Linux_64-bit.tar.gz | tar -xz
-          sudo mv vale /usr/local/bin
-
       - name: Run Vale
-        run: |
-          mkdir -p .vale
-          echo 'StylesPath = .github/styles' > .vale/.vale.ini
-          echo 'MinAlertLevel = suggestion' >> .vale/.vale.ini
-          echo '[*.md]' >> .vale/.vale.ini
-          echo 'BasedOnStyles = Vale' >> .vale/.vale.ini
-          vale --config=.vale/.vale.ini . > vale-output.txt || true
+        uses: errata-ai/vale-action@v2
+        with:
+          version: '3.11.1'  # Specify the desired Vale version
+          files: '.'         # Directory to lint
+          config: '.vale.ini' # Path to your Vale configuration file
+          fail_on_error: false
+        continue-on-error: true
 
       - name: Format Vale output for PR comment
         run: |
