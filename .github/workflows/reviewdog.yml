@@ -26,7 +26,7 @@ jobs:
       - name: Setup reviewdog
         # uses: reviewdog/action-setup@v1
         run: |
-          go install ./cmd/reviewdog
+          go install github.com/reviewdog/reviewdog/cmd/reviewdog@latest
 
       - name: Run reviewdog
         env:
@@ -74,7 +74,7 @@ jobs:
       - name: Setup reviewdog
         # uses: reviewdog/action-setup@v1
         run: |
-          go install ./cmd/reviewdog
+          go install github.com/reviewdog/reviewdog/cmd/reviewdog@latest
 
       - name: Run reviewdog (github-pr-check)
         continue-on-error: true
@@ -236,7 +236,7 @@ jobs:
       - name: Setup reviewdog
         # uses: reviewdog/action-setup@v1
         run: |
-          go install ./cmd/reviewdog
+          go install github.com/reviewdog/reviewdog/cmd/reviewdog@latest
 
       - name: Custom rdjson test
         env:
@@ -260,7 +260,7 @@ jobs:
       - name: Setup reviewdog
         # uses: reviewdog/action-setup@v1
         run: |
-          go install ./cmd/reviewdog
+          go install github.com/reviewdog/reviewdog/cmd/reviewdog@latest
       - name: Custom rdjson test
         run: |
           mkdir ../results
