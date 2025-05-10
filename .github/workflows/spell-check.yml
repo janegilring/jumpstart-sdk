@@ -33,8 +33,7 @@ jobs:
             --color
 
       - name: Run CSpell with Reviewdog (PR feedback)
-        uses: reviewdog/action-cspell@v1
+        uses: reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893 # v1.3.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
-          cspell_args: "--config ./cspell/cspell.json --no-progress --show-context --color '**/*'"
+          reviewdog_version: latest # Optional. [latest,nightly,v.X.Y.Z]
+        # cspell_args: "--config ./cspell/cspell.json --no-progress --show-context --color '**/*'"
