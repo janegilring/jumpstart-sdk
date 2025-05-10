@@ -1,39 +1,46 @@
-# .github/workflows/vale.yml
-name: Vale Linting
+name: Vale PR Check
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  vale-check:
+  vale:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Vale
-        run: |
-          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.5.0/vale_3.5.0_Linux_64-bit.tar.gz | tar -xz
-          sudo mv vale /usr/local/bin
-
-      - name: Download styles
-        run: |
-          mkdir -p .github/vale/styles
-          git clone https://github.com/errata-ai/Microsoft.git .github/vale/styles/Microsoft
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Run Vale
-        run: |
-          vale --output=JSON . > vale-results.json || true
+        uses: errata-ai/vale-action@v2
+        with:
+          version: '3.11.1'  # Specify the desired Vale version
+          files: '.'         # Directory to lint
+          config: '.vale.ini' # Path to your Vale configuration file
+          fail_on_error: false
+        continue-on-error: true
 
-      - name: Format Vale output
-        id: format
+      - name: Format Vale output for PR comment
         run: |
-          echo '```' > vale-comment.txt
-          jq -r '.[] | "\(.Filename):\(.Line): \(.Message) [\(.Severity)]"' vale-results.json >> vale-comment.txt
-          echo '```' >> vale-comment.txt
+          echo '### :mag_right: Vale Linting Report' > vale-comment.txt
+          echo '' >> vale-comment.txt
+          if [ -s vale-output.txt ]; then
+            cat vale-output.txt >> vale-comment.txt
+          else
+            echo "✅ No linting issues found." >> vale-comment.txt
+          fi
 
-      - name: Comment on PR
+      - name: Generate GitHub App token
+        id: app-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.JUMPSTART_ACCESS_APP_ID }}
+          private_key: ${{ secrets.JUMPSTART_ACCESS_APP_PRIVATE_KEY }}
+
+      - name: Comment on PR with Vale results
         uses: peter-evans/create-or-update-comment@v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           issue-number: ${{ github.event.pull_request.number }}
           body-path: vale-comment.txt
