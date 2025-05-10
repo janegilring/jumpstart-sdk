@@ -1,35 +1,30 @@
 name: Spell Check
 
 on:
-  push:
-    branches:
-      - main
-      - dev
   pull_request:
-    branches:
-      - main
-      - dev
+    paths:
+      - '**/*.{md,txt,ps1,sh,py,js,ts,java,cs,json,yml,yaml}'
 
 jobs:
   spellcheck:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install CSpell
+      - name: Install cspell
         run: npm install -g cspell
 
-      - name: Debug file list
-        run: |
-          echo "Files in repo:"
-          find . -type f
+      - name: Install reviewdog
+        uses: reviewdog/action-reviewdog@v1
 
-      - name: Run Spell Check
+      - name: Run cspell with reviewdog
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cspell "**/*" \
-            --config ./cspell/cspell.json \
-            --no-progress \
-            --show-context \
-            --color
+          cspell lint --config ./cspell.json \
+            --no-progress --no-summary --show-suggestions \
+            | reviewdog -efm="%f:%l:%c - %m" \
+                        -name="cspell" \
+                        -reporter=github-pr-review \
+                        -filter-mode=added \
+                        -fail-on-error=true
