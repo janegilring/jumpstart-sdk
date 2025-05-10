@@ -17,14 +17,20 @@ jobs:
           # Determine architecture and download the appropriate Vale binary
           ARCH=$(uname -m)
           if [ "$ARCH" == "x86_64" ]; then
-            curl -fsSL "https://github.com/errata-ai/vale/releases/download/v3.11.2/vale_3.11.2_Linux_64-bit.tar.gz" | tar -xz -C /home/runner
+            VALE_VERSION="v3.11.1"
+            curl -fsSL "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_Linux_64-bit.tar.gz" | tar -xz -C /home/runner
           elif [ "$ARCH" == "aarch64" ]; then
-            curl -fsSL "https://github.com/errata-ai/vale/releases/download/v3.11.2/vale_3.11.2_Linux_arm64.tar.gz" | tar -xz -C /home/runner
+            VALE_VERSION="v3.11.1"
+            curl -fsSL "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_Linux_arm64.tar.gz" | tar -xz -C /home/runner
           else
             echo "Unsupported architecture: $ARCH"
             exit 1
           fi
           sudo mv /home/runner/vale /usr/local/bin/vale
+
+      - name: Create styles directory
+        run: |
+          mkdir -p .github/vale/styles
 
       - name: Install Microsoft Style for Vale
         run: |
