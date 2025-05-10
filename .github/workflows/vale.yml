@@ -14,11 +14,14 @@ jobs:
 
       - name: Install Vale
         run: |
-          # Determine architecture
+          # Determine architecture and download the appropriate Vale binary
           ARCH=$(uname -m)
           if [ "$ARCH" == "x86_64" ]; then
-            VALE_VERSION="v3.11.2"
-            curl -fsSL "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_$VALE_VERSION_Linux_64-bit.tar.gz" | tar -xz -C /home/runner
+            VALE_VERSION="v3.11.1"
+            curl -fsSL "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_Linux_64-bit.tar.gz" | tar -xz -C /home/runner
+          elif [ "$ARCH" == "aarch64" ]; then
+            VALE_VERSION="v3.11.1"
+            curl -fsSL "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_Linux_arm64.tar.gz" | tar -xz -C /home/runner
           else
             echo "Unsupported architecture: $ARCH"
             exit 1
