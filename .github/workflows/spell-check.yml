@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request: # Keep pull_request trigger for reviewdog
+  pull_request:
     branches:
       - main
 
@@ -16,15 +16,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run CSpell with reviewdog
+      - name: Install CSpell
+        run: npm install -g cspell
+
+      - name: Debug file list
+        run: |
+          echo "Files in repo:"
+          find . -type f
+
+      - name: Run Spell Check
+        run: |
+          cspell "**/*" \
+            --config ./cspell/cspell.json \
+            --no-progress \
+            --show-context \
+            --color
+
+      - name: Run CSpell with Reviewdog (PR feedback)
         uses: reviewdog/action-cspell@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review # Use github-pr-review reporter for PR comments
-          cspell_config_file: ./cspell/cspell.json
-          # Optional: specify file patterns if different from cspell.json, otherwise it uses cspell.json 'files'
-          # files: |
-          #   **/*.md
-          #   **/*.txt
-          # By default, it will use the 'files' patterns from your cspell.json
-          # and respect 'ignorePaths' from cspell.json
+          reporter: github-pr-review
+          cspell_args: "--config ./cspell/cspell.json --no-progress --show-context --color '**/*'"
