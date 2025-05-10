@@ -2,7 +2,7 @@
 
 This repositiry contians a simpple demnstration of spellchek integration using **cspeel** and **revuedog**.
 
-## Instllatione
+## Instllation
 
 To intall the depandencies, run:
 
