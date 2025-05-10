@@ -8,5 +8,3 @@ To intall the depandencies, run:
 
 ```bash
 npm innstalle
-
-azure
