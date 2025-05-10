@@ -14,7 +14,15 @@ jobs:
 
       - name: Install Vale
         run: |
-          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.11.2/vale_3.11.2_Linux_arm64.tar.gz | tar -xz -C /home/runner
+          # Determine architecture
+          ARCH=$(uname -m)
+          if [ "$ARCH" == "x86_64" ]; then
+            VALE_VERSION="v3.11.1"
+            curl -fsSL "https://github.com/errata-ai/vale/releases/download/$VALE_VERSION/vale_Linux_64-bit.tar.gz" | tar -xz -C /home/runner
+          else
+            echo "Unsupported architecture: $ARCH"
+            exit 1
+          fi
           sudo mv /home/runner/vale /usr/local/bin/vale
 
       - name: Install Microsoft Style for Vale
