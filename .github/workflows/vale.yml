@@ -32,12 +32,12 @@ jobs:
 
       - name: Install Microsoft Style for Vale
         run: |
-          vale install errata-ai/Microsoft
+          git clone https://github.com/errata-ai/Microsoft.git .github/vale/styles/Microsoft
 
       - name: Run Vale
-        uses: errata-ai/vale-action@v2
+        uses: errata-ai/vale-action@v2.1.1
         with:
-          version: '3.11.1'
+          version: '3.11.2'
           files: '.'
           fail_on_error: false
         continue-on-error: true
