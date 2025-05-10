@@ -1,0 +1,39 @@
+# .github/workflows/vale.yml
+name: Vale Linting
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  vale-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vale
+        run: |
+          curl -fsSL https://github.com/errata-ai/vale/releases/download/v3.5.0/vale_3.5.0_Linux_64-bit.tar.gz | tar -xz
+          sudo mv vale /usr/local/bin
+
+      - name: Download styles
+        run: |
+          mkdir -p .github/vale/styles
+          git clone https://github.com/errata-ai/Microsoft.git .github/vale/styles/Microsoft
+
+      - name: Run Vale
+        run: |
+          vale --output=JSON . > vale-results.json || true
+
+      - name: Format Vale output
+        id: format
+        run: |
+          echo '```' > vale-comment.txt
+          jq -r '.[] | "\(.Filename):\(.Line): \(.Message) [\(.Severity)]"' vale-results.json >> vale-comment.txt
+          echo '```' >> vale-comment.txt
+
+      - name: Comment on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: vale-comment.txt

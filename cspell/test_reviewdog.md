@@ -7,4 +7,4 @@ This repositiry contians a simpple demnstration of spellchek integration using *
 To intall the depandencies, run:
 
 ```bash
-npm innstall
+npm innstalle
