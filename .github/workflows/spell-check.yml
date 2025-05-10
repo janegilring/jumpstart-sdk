@@ -32,8 +32,24 @@ jobs:
             --show-context \
             --color || true
 
-      - name: Run CSpell with Reviewdog (PR feedback)
-        uses: reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893 # v1.3.2
+      - name: Setup Reviewdog
+        uses: reviewdog/action-setup@v1
         with:
-          reviewdog_version: latest # Optional. [latest,nightly,v.X.Y.Z]
-        # cspell_args: "--config ./cspell/cspell.json --no-progress --show-context --color '**/*'"
+          reviewdog_version: latest
+
+      - name: Run CSpell with Reviewdog (PR feedback)
+        if: github.event_name == 'pull_request'
+        run: |
+          cspell "**/*" \
+            --config ./cspell/cspell.json \
+            --no-progress \
+            --show-context \
+            --color \
+            --no-summary \
+            --no-exit | \
+          reviewdog -efm="%f:%l:%c - %m" \
+            -name="cspell" \
+            -reporter=github-pr-check \
+            -filter-mode=nofilter \
+            -fail-on-error=false \
+            -level=info
