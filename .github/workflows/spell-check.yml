@@ -6,11 +6,15 @@ on:
       - main
       - integration
     paths:
-      - 'cspell/**'
+      - '**/*.{md,txt,ps1,sh,py,js,ts,json,yml,yaml}'  # Check all relevant files
+      - 'cspell/**'  # Also check the cspell config files
   push:
     branches:
       - main
       - integration
+    paths:
+      - '**/*.{md,txt,ps1,sh,py,js,ts,json,yml,yaml}'
+      - 'cspell/**'
 
 jobs:
   spellcheck:
