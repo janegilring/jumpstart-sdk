@@ -22,5 +22,9 @@
   ],
   "dictionaries": ["typescript", "node", "softwareTerms"],
   "dictionaryDefinitions": [],
-  "words": []
+  "words": [
+    "OKGREEN",
+    "ENDC",
+    "icanhazip"
+  ]
 }
