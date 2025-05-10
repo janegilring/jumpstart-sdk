@@ -12,12 +12,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Microsoft Style for Vale
+        run: |
+          mkdir -p .github/vale/styles
+          vale install errata-ai/Microsoft
+
       - name: Run Vale
         uses: errata-ai/vale-action@v2
         with:
-          version: '3.11.1'  # Specify the desired Vale version
-          files: '.'         # Directory to lint
-          config: '.vale.ini' # Path to your Vale configuration file
+          version: '3.11.1'
+          files: '.'
           fail_on_error: false
         continue-on-error: true
 
