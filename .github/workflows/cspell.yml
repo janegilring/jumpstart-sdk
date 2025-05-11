@@ -1,63 +1,22 @@
-name: Spell Check
 
+name: CSpell
 on:
-  pull_request_target:
-    paths:
-      - '**/*.md'
-      - '**/*.bicep'
-      - '**/*.tf'
-      - '**/*.tfvars'
-      - '**/*.json'
-      - '**/*.yml'
-      - '**/*.yaml'
-      - '**/*.py'
-      - '**/*.sh'
-      - '**/*.ps1'
-
-# Add permissions block to limit GITHUB_TOKEN scope
-permissions:
-  contents: read
-  pull-requests: write
+  push:
+    branches:
+      - main # Modify if you use a different main branch name, such as the legacy "master" name.
+  pull_request:
+    branches:
+      - main # Modify if you use a different main branch name, such as the legacy "master" name.
 
 jobs:
-  cspell-check:
+  spellchecking:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        persist-credentials: false
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: Install cspell
-      run: npm install -g cspell@latest
-
-    - name: Run cspell
-      id: spellcheck
-      run: |
-        npx cspell --config .cspell.json . > result.txt || true
-        cat result.txt
-        echo "result<<EOF" >> $GITHUB_OUTPUT
-        cat result.txt >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-
-    - name: Comment on PR if spelling issues found
-      if: steps.spellcheck.outputs.result != ''
-      uses: marocchino/sticky-pull-request-comment@v2
-      with:
-        path: result.txt
-        header: spell-check-results
-
-    - name: Delete comment if no spelling issues
-      if: steps.spellcheck.outputs.result == ''
-      uses: marocchino/sticky-pull-request-comment@v2
-      with:
-        header: spell-check-results
-        delete: true
+      - uses: actions/checkout@v4
+        name: Check out the code
+      - uses: actions/setup-node@v1
+        name: Run spell check
+        with:
+          node-version: "20"
+      - run: npm install -g cspell
+      - run: cspell --config ./cSpell.json "**/*.md"
