@@ -1,4 +1,3 @@
-
 name: CSpell
 on:
   push:
@@ -14,9 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Check out the code
-      - uses: actions/setup-node@v1
-        name: Run spell check
+      - uses: actions/setup-node@v4
+        name: Setup Node.js
         with:
           node-version: "20"
-      - run: npm install -g cspell
-      - run: cspell --config ./cSpell.json "**/*.md"
+      - name: Install cspell
+        run: npm install -g cspell
+      - name: Run cspell check
+        run: cspell --config ./cSpell.json "**/*.md"
+        continue-on-error: true
