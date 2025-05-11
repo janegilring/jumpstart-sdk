@@ -45,7 +45,7 @@ jobs:
         if: github.event_name == 'pull_request' && steps.spellcheck_run.outputs.issues_found == 'true'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          # GITHUB_TOKEN is automatically used by the action
+          token: ${{ secrets.GITHUB_TOKEN }} # Explicitly pass the token
           header: cspell-report # A unique header for the sticky comment
           path: cspell-results.txt # File containing the comment body
 
@@ -53,5 +53,6 @@ jobs:
         if: github.event_name == 'pull_request' && steps.spellcheck_run.outputs.issues_found == 'false'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Explicitly pass the token
           header: cspell-report # Must match the header used for posting
           delete: true
