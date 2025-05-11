@@ -10,15 +10,48 @@ on:
 jobs:
   spellchecking:
     runs-on: ubuntu-latest
+    # Add permissions for the job
+    permissions:
+      contents: read # For actions/checkout
+      pull-requests: write # For posting PR comments
     steps:
       - uses: actions/checkout@v4
         name: Check out the code
-      - uses: actions/setup-node@v4
-        name: Setup Node.js
+      - uses: actions/setup-node@v4 # Updated action version
+        name: Setup Node.js # Clearer step name
         with:
           node-version: "20"
-      - name: Install cspell
+      - name: Install cspell # Added name to step
         run: npm install -g cspell
-      - name: Run cspell check
-        run: cspell --config ./cSpell.json "**/*.md"
-        continue-on-error: true
+      - name: Run cspell check and capture output
+        id: spellcheck_run # Added id to refer to outputs
+        run: |
+          # Run cspell, output to file. If cspell finds issues, it exits non-zero.
+          # The `|| true` ensures the script continues, allowing us to check the output file.
+          cspell --config ./cSpell.json --no-summary --reporter text "**/*.md" > cspell-results.txt || true
+
+          # Check if the output file has content (meaning issues were found)
+          if [ -s cspell-results.txt ]; then
+            echo "issues_found=true" >> $GITHUB_OUTPUT
+            echo "Spelling issues found. Results in cspell-results.txt"
+            cat cspell-results.txt # Optional: view output in action logs
+          else
+            echo "issues_found=false" >> $GITHUB_OUTPUT
+            echo "No spelling issues found."
+          fi
+        # Removed continue-on-error: true as the script logic handles cspell's exit code
+
+      - name: Comment on PR if spelling issues found
+        if: github.event_name == 'pull_request' && steps.spellcheck_run.outputs.issues_found == 'true'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          # GITHUB_TOKEN is automatically used by the action
+          header: cspell-report # A unique header for the sticky comment
+          path: cspell-results.txt # File containing the comment body
+
+      - name: Delete comment if no spelling issues
+        if: github.event_name == 'pull_request' && steps.spellcheck_run.outputs.issues_found == 'false'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: cspell-report # Must match the header used for posting
+          delete: true
