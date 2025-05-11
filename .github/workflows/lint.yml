@@ -11,7 +11,9 @@ jobs:
         uses: actions/setup-node@v4 # Updated to v4
         with:
           node-version: '20' # Updated to a current LTS version (e.g., 18, 20)
-          cache: 'npm' # Added npm caching
+          # cache: 'npm' # Removed to avoid error if lockfile is missing.
+                        # For caching, ensure package-lock.json (or yarn.lock) is committed to your repo root,
+                        # or specify cache-dependency-path if it's in a subdirectory.
 
       - name: List files in checkout directory # Diagnostic step
         run: ls -la
