@@ -8,8 +8,6 @@ on:
       - powershell/modules/Azure.Arc.Jumpstart.Common/source
     tags:
       - 'v*'
-    paths-ignore:
-      - 'CHANGELOG.md'
   pull_request:
     branches:
       - main
