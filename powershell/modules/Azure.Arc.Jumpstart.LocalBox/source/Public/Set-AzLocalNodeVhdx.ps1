@@ -1,4 +1,4 @@
-function Set-AzLocalNodeVHDX {
+function Set-AzLocalNodeVhdx {
     param (
         $Hostname,
         $IPAddress,

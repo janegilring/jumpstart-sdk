@@ -1,4 +1,4 @@
-function Set-MGMTVHDX {
+function Set-MgmtVhdx {
     param (
         $VMMac,
         $LocalBoxConfig
