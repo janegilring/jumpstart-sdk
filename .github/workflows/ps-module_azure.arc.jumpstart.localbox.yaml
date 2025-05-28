@@ -131,12 +131,6 @@ jobs:
           name: CodeCoverageWinPS7
           path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}
 
-      - name: Download Windows PS51 Test Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: CodeCoverageWinPS51
-          path: ${{ env.buildFolderName }}/${{ env.testResultFolderName }}
-
       - name: Download macOS Test Artifact
         uses: actions/download-artifact@v4
         with:
