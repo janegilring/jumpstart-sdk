@@ -1,7 +1,8 @@
 function Set-FabricNetwork {
     param (
         $LocalBoxConfig,
-        [PSCredential]$localCred
+        [PSCredential]$localCred,
+        [PSCredential]$domainCred
     )
     Start-Sleep -Seconds 20
     Write-Host "Configuring Fabric network on Management VM"
