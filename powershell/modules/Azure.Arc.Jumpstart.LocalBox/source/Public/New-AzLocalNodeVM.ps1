@@ -11,22 +11,22 @@ function New-AzLocalNodeVM {
     $VHDX2 = New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-Data.vhdx" -SizeBytes 268435456000 -Dynamic
 
     # Create S2D Storage
-    New-VHD -Path "$HostVMPath\$Name-S2D_Disk1.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
-    New-VHD -Path "$HostVMPath\$Name-S2D_Disk2.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
-    New-VHD -Path "$HostVMPath\$Name-S2D_Disk3.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
-    New-VHD -Path "$HostVMPath\$Name-S2D_Disk4.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
-    New-VHD -Path "$HostVMPath\$Name-S2D_Disk5.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
-    New-VHD -Path "$HostVMPath\$Name-S2D_Disk6.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
+    New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk1.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
+    New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk2.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
+    New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk3.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
+    New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk4.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
+    New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk5.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
+    New-VHD -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk6.vhdx" -SizeBytes $LocalBoxConfig.S2D_Disk_Size -Dynamic | Out-Null
 
     # Create Nested VM
     New-VM -Name $Name -MemoryStartupBytes $LocalBoxConfig.NestedVMMemoryinGB -VHDPath $VHDX1.Path -SwitchName $VMSwitch -Generation 2 | Out-Null
     Add-VMHardDiskDrive -VMName $Name -Path $VHDX2.Path
-    Add-VMHardDiskDrive -Path "$HostVMPath\$Name-S2D_Disk1.vhdx" -VMName $Name | Out-Null
-    Add-VMHardDiskDrive -Path "$HostVMPath\$Name-S2D_Disk2.vhdx" -VMName $Name | Out-Null
-    Add-VMHardDiskDrive -Path "$HostVMPath\$Name-S2D_Disk3.vhdx" -VMName $Name | Out-Null
-    Add-VMHardDiskDrive -Path "$HostVMPath\$Name-S2D_Disk4.vhdx" -VMName $Name | Out-Null
-    Add-VMHardDiskDrive -Path "$HostVMPath\$Name-S2D_Disk5.vhdx" -VMName $Name | Out-Null
-    Add-VMHardDiskDrive -Path "$HostVMPath\$Name-S2D_Disk6.vhdx" -VMName $Name | Out-Null
+    Add-VMHardDiskDrive -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk1.vhdx" -VMName $Name | Out-Null
+    Add-VMHardDiskDrive -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk2.vhdx" -VMName $Name | Out-Null
+    Add-VMHardDiskDrive -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk3.vhdx" -VMName $Name | Out-Null
+    Add-VMHardDiskDrive -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk4.vhdx" -VMName $Name | Out-Null
+    Add-VMHardDiskDrive -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk5.vhdx" -VMName $Name | Out-Null
+    Add-VMHardDiskDrive -Path "$($LocalBoxConfig.HostVMPath)\$Name-S2D_Disk6.vhdx" -VMName $Name | Out-Null
 
     Set-VM -Name $Name -ProcessorCount 20 -AutomaticStartAction Start -AutomaticStopAction ShutDown -AutomaticStartDelay 300
     Get-VMNetworkAdapter -VMName $Name | Rename-VMNetworkAdapter -NewName "SDN"

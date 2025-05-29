@@ -38,8 +38,8 @@ function Set-MgmtVhdx {
     # Injecting configs into VMs
     Write-Host "Injecting files into $path"
     Copy-Item -Path "$Env:LocalBoxDir\LocalBox-Config.psd1" -Destination ($MountedDrive + ":\") -Recurse -Force
-    Copy-Item -Path $guiVHDXPath -Destination ($MountedDrive + ":\VMs\Base\GUI.vhdx") -Force
-    Copy-Item -Path $AzLocalVHDXPath -Destination ($MountedDrive + ":\VMs\Base\AzL-node.vhdx") -Force
+    Copy-Item -Path $LocalBoxConfig.guiVHDXPath -Destination ($MountedDrive + ":\VMs\Base\GUI.vhdx") -Force
+    Copy-Item -Path $LocalBoxConfig.AzLocalVHDXPath -Destination ($MountedDrive + ":\VMs\Base\AzL-node.vhdx") -Force
     New-Item -Path ($MountedDrive + ":\") -Name "Windows Admin Center" -ItemType Directory -Force | Out-Null
     Copy-Item -Path "$($LocalBoxConfig.Paths["WACDir"])\*.msi" -Destination ($MountedDrive + ":\Windows Admin Center") -Recurse -Force
 
