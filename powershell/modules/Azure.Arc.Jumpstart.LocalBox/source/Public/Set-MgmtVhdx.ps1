@@ -3,16 +3,32 @@ function Set-MgmtVhdx {
         $VMMac,
         $LocalBoxConfig
     )
+
+    # Build LOCAL path instead of SMB path
     $DriveLetter = $($LocalBoxConfig.HostVMPath).Split(':')
-    $path = (("\\localhost\") + ($DriveLetter[0] + "$") + ($DriveLetter[1]) + "\" + $($LocalBoxConfig.MgmtHostConfig.Hostname) + ".vhdx")
+    $path = $DriveLetter[0] + ":\" + ($DriveLetter[1].TrimStart('\')) + "\" + $($LocalBoxConfig.MgmtHostConfig.Hostname) + ".vhdx"
+
     Write-Host "Performing offline installation of Hyper-V on $($LocalBoxConfig.MgmtHostConfig.Hostname)"
     Install-WindowsFeature -Vhd $path -Name Hyper-V, RSAT-Hyper-V-Tools, Hyper-V-Powershell -Confirm:$false | Out-Null
-    Start-Sleep -Seconds 20
 
-    # Mount VHDX - bunch of kludgey logic in here to deal with different partition layouts on the GUI and Azure Local VHD images
+    # Wait for DISM and any file handles to close
+    Start-Sleep -Seconds 30
+
+    # Check if the VHDX is still attached
+    $vhdInfo = Get-VHD -Path $path -ErrorAction SilentlyContinue
+    if ($vhdInfo -and $vhdInfo.Attached) {
+        Write-Host "VHDX is still attached after Install-WindowsFeature. Dismounting..."
+        Dismount-VHD -Path $path
+        Start-Sleep -Seconds 5
+    }
+
+    # Mount VHDX with retry logic
     Write-Host "Mounting VHDX file at $path"
+    $vhd = Mount-VHDWithRetry -VhdPath $path
+    $disk = $vhd | Get-Disk
+    $partition = $disk | Get-Partition -PartitionNumber 3
+
     [string]$MountedDrive = ""
-    $partition = Mount-VHD -Path $path -Passthru | Get-Disk | Get-Partition -PartitionNumber 3
     if (!$partition.DriveLetter) {
         $MountedDrive = "X"
         $partition | Set-Partition -NewDriveLetter $MountedDrive
@@ -27,7 +43,9 @@ function Set-MgmtVhdx {
 
     Write-Host "Mounted Disk Volume is: $MountedDrive"
     $PantherDir = Get-ChildItem -Path ($MountedDrive + ":\Windows")  -Filter "Panther"
-    if (!$PantherDir) { New-Item -Path ($MountedDrive + ":\Windows\Panther") -ItemType Directory -Force | Out-Null }
+    if (!$PantherDir) {
+        New-Item -Path ($MountedDrive + ":\Windows\Panther") -ItemType Directory -Force | Out-Null
+    }
 
     Set-Content -Value $UnattendXML -Path ($MountedDrive + ":\Windows\Panther\Unattend.xml") -Force
 
@@ -45,5 +63,5 @@ function Set-MgmtVhdx {
 
     # Dismount VHDX
     Write-Host "Dismounting VHDX File at path $path"
-    Dismount-VHD $path
+    Dismount-VHD -Path $path
 }
