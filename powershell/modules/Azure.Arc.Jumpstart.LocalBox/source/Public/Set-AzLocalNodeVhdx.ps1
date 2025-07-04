@@ -16,12 +16,8 @@ function Set-AzLocalNodeVhdx {
     Start-Sleep -Seconds 10
 
     # Ensure VHD is not still attached
-    $vhdInfo = Get-VHD -Path $path -ErrorAction SilentlyContinue
-    if ($vhdInfo -and $vhdInfo.Attached) {
-        Write-Host "VHDX is still attached after Install-WindowsFeature. Dismounting..."
-        Dismount-VHD -Path $path
-        Start-Sleep -Seconds 5
-    }
+    Write-Host "Waiting for VHDX to detach after Install-WindowsFeature..."
+    Wait-ForVHDDetach -Path $path
 
     # Install necessary tools to converge cluster
     Write-Host "Installing and Configuring Failover Clustering on $Hostname"
@@ -30,12 +26,8 @@ function Set-AzLocalNodeVhdx {
     Start-Sleep -Seconds 15
 
     # Check again in case clustering installation mounted it
-    $vhdInfo = Get-VHD -Path $path -ErrorAction SilentlyContinue
-    if ($vhdInfo -and $vhdInfo.Attached) {
-        Write-Host "VHDX is still attached after clustering feature install. Dismounting..."
-        Dismount-VHD -Path $path
-        Start-Sleep -Seconds 5
-    }
+    Write-Host "Waiting for VHDX to detach after Install-WindowsFeature..."
+    Wait-ForVHDDetach -Path $path
 
     # Mount VHDX with retry logic
     Write-Host "Mounting VHDX file at $path"
@@ -67,4 +59,7 @@ function Set-AzLocalNodeVhdx {
     # Dismount VHDX
     Write-Host "Dismounting VHDX File at path $path"
     Dismount-VHD -Path $path
+
+    Write-Host "Waiting for VHDX to detach after injecting answer-file..."
+    Wait-ForVHDDetach -Path $path
 }

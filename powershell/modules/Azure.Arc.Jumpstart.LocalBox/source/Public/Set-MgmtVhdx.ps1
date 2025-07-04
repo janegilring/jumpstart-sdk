@@ -14,13 +14,8 @@ function Set-MgmtVhdx {
     # Wait for DISM and any file handles to close
     Start-Sleep -Seconds 30
 
-    # Check if the VHDX is still attached
-    $vhdInfo = Get-VHD -Path $path -ErrorAction SilentlyContinue
-    if ($vhdInfo -and $vhdInfo.Attached) {
-        Write-Host "VHDX is still attached after Install-WindowsFeature. Dismounting..."
-        Dismount-VHD -Path $path
-        Start-Sleep -Seconds 5
-    }
+    Write-Host "Waiting for VHDX to detach after Install-WindowsFeature..."
+    Wait-ForVHDDetach -Path $path
 
     # Mount VHDX with retry logic
     Write-Host "Mounting VHDX file at $path"
@@ -64,4 +59,7 @@ function Set-MgmtVhdx {
     # Dismount VHDX
     Write-Host "Dismounting VHDX File at path $path"
     Dismount-VHD -Path $path
+
+    Write-Host "Waiting for VHDX to detach after injecting answer-file..."
+    Wait-ForVHDDetach -Path $path
 }
